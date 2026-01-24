@@ -1,0 +1,41 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="TP203.App"
+             xmlns:local="using:TP203"
+             xmlns:conv="using:TP203.Converters"
+             RequestedThemeVariant="Default">
+             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+
+    <Application.DataTemplates>
+        <local:ViewLocator/>
+    </Application.DataTemplates>
+  
+    <Application.Resources>
+        <FontFamily x:Key="MainFont">avares://Avalonia.Fonts.Inter/Assets#Inter</FontFamily>
+        <conv:WidthToVisibilityConverter x:Key="WidthToVisibilityConverter"/>
+        
+        <!-- Dark Theme Palette -->
+        <SolidColorBrush x:Key="AppBackgroundBrush">#0F1115</SolidColorBrush>
+        <SolidColorBrush x:Key="SidebarBackgroundBrush">#161B22</SolidColorBrush>
+        <SolidColorBrush x:Key="SurfaceBrush">#1F2936</SolidColorBrush>
+        <SolidColorBrush x:Key="SurfaceLightBrush">#2A3441</SolidColorBrush>
+        
+        <SolidColorBrush x:Key="PrimaryGreenBrush">#00C896</SolidColorBrush> 
+        <SolidColorBrush x:Key="AccentAmberBrush">#F39C12</SolidColorBrush>
+        <SolidColorBrush x:Key="AlertRedBrush">#E74C3C</SolidColorBrush>
+
+        <SolidColorBrush x:Key="TextPrimaryBrush">#FFFFFF</SolidColorBrush>
+        <SolidColorBrush x:Key="TextSecondaryBrush">#94A3B8</SolidColorBrush>
+        
+        <!-- Legacy mappings to keep existing bindings working but darkened -->
+        <SolidColorBrush x:Key="AcademicBlueBrush">#3498DB</SolidColorBrush> <!-- Lighter blue for dark mode contrast -->
+        <SolidColorBrush x:Key="SuccessGreenBrush">#00C896</SolidColorBrush>
+        <SolidColorBrush x:Key="AttentionAmberBrush">#F1C40F</SolidColorBrush>
+        <SolidColorBrush x:Key="LightBackgroundBrush">#0F1115</SolidColorBrush>
+        <SolidColorBrush x:Key="DarkTextBrush">#FFFFFF</SolidColorBrush>
+    </Application.Resources>
+
+    <Application.Styles>
+        <FluentTheme />
+    </Application.Styles>
+</Application>

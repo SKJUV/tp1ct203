@@ -1,0 +1,119 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:TP203.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="800"
+             x:Class="TP203.Views.MobileDashboardView"
+             x:DataType="vm:MobileDashboardViewModel">
+
+    <Grid RowDefinitions="Auto, *, Auto" Background="{DynamicResource AppBackgroundBrush}">
+        
+        <!-- Header -->
+        <Border Grid.Row="0" Background="{DynamicResource SidebarBackgroundBrush}" Padding="20,15" BorderBrush="{DynamicResource SurfaceLightBrush}" BorderThickness="0,0,0,1">
+            <Grid ColumnDefinitions="Auto, *, Auto">
+                <Border Width="36" Height="36" Background="{DynamicResource SurfaceBrush}" CornerRadius="10">
+                    <TextBlock Text="👤" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
+                </Border>
+                <TextBlock Grid.Column="1" Text="{Binding Title}" Foreground="{DynamicResource TextPrimaryBrush}" FontWeight="Bold" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Border Grid.Column="2" Width="36" Height="36" Background="{DynamicResource SurfaceBrush}" CornerRadius="10">
+                    <TextBlock Text="🔔" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
+                </Border>
+            </Grid>
+        </Border>
+
+        <!-- Content -->
+        <ScrollViewer Grid.Row="1" Padding="20">
+            <StackPanel Spacing="25">
+                <!-- Date Section -->
+                <StackPanel Spacing="5">
+                    <TextBlock Text="LUNDI" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12" FontWeight="Bold" LetterSpacing="1"/>
+                    <TextBlock Text="19 Octobre" Foreground="{DynamicResource TextPrimaryBrush}" FontSize="28" FontWeight="Black"/>
+                </StackPanel>
+
+                <!-- Current Session -->
+                <StackPanel Spacing="15">
+                    <TextBlock Text="SESSION ACTUELLE" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="11" FontWeight="Bold"/>
+                    <Border Background="{DynamicResource SurfaceBrush}" CornerRadius="20" Padding="20" BoxShadow="0 10 30 0 #40000000">
+                        <StackPanel Spacing="15">
+                            <Grid ColumnDefinitions="*, Auto">
+                                <StackPanel Orientation="Horizontal" Spacing="8">
+                                    <Border Background="{DynamicResource AcademicBlueBrush}" CornerRadius="5" Padding="6,2">
+                                        <TextBlock Text="ICT-L2" Foreground="White" FontSize="10" FontWeight="Bold"/>
+                                    </Border>
+                                    <TextBlock Text="MAT201" Foreground="{DynamicResource AcademicBlueBrush}" FontWeight="Bold"/>
+                                </StackPanel>
+                                <Border Grid.Column="1" Background="{DynamicResource PrimaryGreenBrush}" Opacity="0.2" CornerRadius="10" Padding="10,4">
+                                    <TextBlock Text="En cours" Foreground="{DynamicResource PrimaryGreenBrush}" FontSize="10" FontWeight="Bold"/>
+                                </Border>
+                            </Grid>
+
+                            <TextBlock Text="Statistiques Appliquées" Foreground="{DynamicResource TextPrimaryBrush}" FontSize="22" FontWeight="Bold" TextWrapping="Wrap"/>
+                            
+                            <Grid ColumnDefinitions="Auto, *, Auto">
+                                <StackPanel Orientation="Horizontal" Spacing="10">
+                                    <Border Width="32" Height="32" Background="{DynamicResource AppBackgroundBrush}" CornerRadius="16">
+                                        <TextBlock Text="PF" FontSize="11" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                    </Border>
+                                    <TextBlock Text="Pr. Fofana" Foreground="{DynamicResource TextSecondaryBrush}" VerticalAlignment="Center" FontSize="14"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="5">
+                                    <TextBlock Text="📍" VerticalAlignment="Center"/>
+                                    <TextBlock Text="Salle A" Foreground="{DynamicResource TextPrimaryBrush}" FontWeight="Bold" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <Border Background="{DynamicResource AppBackgroundBrush}" CornerRadius="12" Padding="15">
+                                <Grid ColumnDefinitions="Auto, *">
+                                    <TextBlock Text="🕒" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                    <TextBlock Grid.Column="1" Text="08:00 - 10:00 (Finit dans 45min)" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12"/>
+                                </Grid>
+                            </Border>
+
+                            <Button Content="Faire l'appel" Background="{DynamicResource PrimaryGreenBrush}" Foreground="{DynamicResource AppBackgroundBrush}" FontWeight="Bold" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Height="45" CornerRadius="12"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+
+                <!-- Upcoming Sessions -->
+                <StackPanel Spacing="15">
+                    <TextBlock Text="À SUIVRE" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="11" FontWeight="Bold"/>
+                    <Border Background="{DynamicResource SurfaceBrush}" CornerRadius="16" Padding="15">
+                        <Grid ColumnDefinitions="Auto, *, Auto">
+                            <Border Width="10" Height="40" Background="#8E44AD" CornerRadius="5"/>
+                            <StackPanel Grid.Column="1" Margin="15,0">
+                                <TextBlock Text="10:00 - ICT203" Foreground="{DynamicResource TextPrimaryBrush}" FontWeight="Bold"/>
+                                <TextBlock Text="Génie Logiciel • Dr. Kemgou" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12"/>
+                            </StackPanel>
+                            <TextBlock Grid.Column="2" Text="→" Foreground="{DynamicResource TextSecondaryBrush}" VerticalAlignment="Center"/>
+                        </Grid>
+                    </Border>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Bottom Navigation -->
+        <Border Grid.Row="2" Background="{DynamicResource SidebarBackgroundBrush}" Padding="10,5,10,20" BorderBrush="{DynamicResource SurfaceLightBrush}" BorderThickness="0,1,0,0">
+            <Grid ColumnDefinitions="*, *, *">
+                <Button Grid.Column="0" Background="Transparent" Padding="0,10">
+                    <StackPanel Spacing="5">
+                        <TextBlock Text="📅" HorizontalAlignment="Center" FontSize="20"/>
+                        <TextBlock Text="Planning" Foreground="{DynamicResource PrimaryGreenBrush}" FontSize="10" FontWeight="Bold" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+                <Button Grid.Column="1" Background="Transparent" Padding="0,10" Opacity="0.5">
+                    <StackPanel Spacing="5">
+                        <TextBlock Text="✔" HorizontalAlignment="Center" FontSize="20"/>
+                        <TextBlock Text="Validation" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="10" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+                <Button Grid.Column="2" Command="{Binding LogoutCommand}" Background="Transparent" Padding="0,10" Opacity="0.5">
+                    <StackPanel Spacing="5">
+                        <TextBlock Text="👤" HorizontalAlignment="Center" FontSize="20"/>
+                        <TextBlock Text="Profil" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="10" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

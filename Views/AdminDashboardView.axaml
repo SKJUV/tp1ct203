@@ -1,0 +1,281 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:TP203.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="800"
+             x:Class="TP203.Views.AdminDashboardView"
+             x:DataType="vm:AdminDashboardViewModel">
+
+    <Grid ColumnDefinitions="260, *" Background="{DynamicResource AppBackgroundBrush}">
+        
+        <!-- LEFT SIDEBAR -->
+        <Border Grid.Column="0" Background="{DynamicResource SidebarBackgroundBrush}" BorderBrush="{DynamicResource SurfaceLightBrush}" BorderThickness="0,0,1,0">
+            <Grid RowDefinitions="Auto, *, Auto">
+                <!-- App Logo/Title -->
+                <StackPanel Grid.Row="0" Margin="25,30" Spacing="8">
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                         <Border Width="32" Height="32" Background="{DynamicResource PrimaryGreenBrush}" CornerRadius="8">
+                            <TextBlock Text="🎓" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16"/>
+                         </Border>
+                         <StackPanel>
+                            <TextBlock Text="UYI - Admin" Foreground="{DynamicResource TextPrimaryBrush}" FontWeight="Bold" FontSize="15"/>
+                            <TextBlock Text="Academic Year 2023-24" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="11"/>
+                         </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- Navigation -->
+                <StackPanel Grid.Row="1" Margin="15,0" Spacing="5">
+                    <Button Classes="nav" Content="📊 Dashboard" />
+                    <Button Classes="nav" Content="🏫 Rooms" />
+                    <Button Classes="nav" Content="📚 Courses" />
+                    <Button Classes="nav" Content="👥 Teachers" Background="{DynamicResource SurfaceLightBrush}" Foreground="{DynamicResource TextPrimaryBrush}" FontWeight="SemiBold"/>
+                    <Button Classes="nav" Content="📅 Planning" />
+                    <Button Classes="nav" Content="📜 Logs" />
+                </StackPanel>
+
+                <!-- Bottom Status -->
+                <Border Grid.Row="2" Background="{DynamicResource SurfaceBrush}" CornerRadius="12" Margin="15,25" Padding="15">
+                    <StackPanel Spacing="10">
+                        <Grid ColumnDefinitions="*, Auto">
+                            <TextBlock Text="Staffing Status" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12"/>
+                            <Border Grid.Column="1" Background="#2C3E50" CornerRadius="4" Padding="6,2">
+                                <TextBlock Text="Pending" Foreground="{DynamicResource AccentAmberBrush}" FontSize="10" FontWeight="Bold"/>
+                            </Border>
+                        </Grid>
+                        <StackPanel Orientation="Horizontal" Spacing="5">
+                            <TextBlock Text="Preferences Locked" Foreground="{DynamicResource TextPrimaryBrush}" FontSize="12"/>
+                            <TextBlock Text="45/60" Foreground="{DynamicResource PrimaryGreenBrush}" FontSize="12" FontWeight="Bold"/>
+                        </StackPanel>
+                        <ProgressBar Value="75" Height="6" Background="{DynamicResource AppBackgroundBrush}" Foreground="{DynamicResource PrimaryGreenBrush}" CornerRadius="3"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Border>
+
+        <!-- MAIN CONTENT -->
+        <Grid Grid.Column="1" RowDefinitions="Auto, *">
+            
+            <!-- TOP BAR -->
+            <Border Grid.Row="0" Padding="30,25" Background="{DynamicResource AppBackgroundBrush}">
+                <Grid ColumnDefinitions="Auto, *, Auto">
+                    <StackPanel Orientation="Horizontal" Spacing="15">
+                        <TextBlock Text="Faculty Management" Foreground="{DynamicResource TextPrimaryBrush}" FontSize="24" FontWeight="Bold"/>
+                        <Border Background="{DynamicResource SurfaceBrush}" CornerRadius="6" Padding="8,4" VerticalAlignment="Center">
+                             <TextBlock Text="▽ Dept: Computer Science" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12"/>
+                        </Border>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="12">
+                        <TextBox Watermark="Search faculty..." Width="220" Background="{DynamicResource SurfaceBrush}" BorderThickness="0" CornerRadius="8"/>
+                        <Button Content=" Export List" Background="{DynamicResource SurfaceBrush}" Foreground="{DynamicResource TextPrimaryBrush}" Padding="15,8" CornerRadius="8"/>
+                        <Button Content="+ Add Teacher" Background="{DynamicResource AcademicBlueBrush}" Foreground="White" Padding="15,8" CornerRadius="8"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- DASHBOARD CONTENT AREA -->
+            <Grid Grid.Row="1" ColumnDefinitions="2*, 4*, 2.5*" Margin="30,0,30,30">
+                
+                <!-- TEACHER LIST COLUMN -->
+                <Grid Grid.Column="0" RowDefinitions="Auto, *" MinWidth="240">
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="10" Margin="0,0,0,20">
+                        <Border Background="{DynamicResource AcademicBlueBrush}" CornerRadius="6" Padding="12,6">
+                            <TextBlock Text="All (60)" Foreground="White" FontSize="12" FontWeight="Bold"/>
+                        </Border>
+                        <TextBlock Text="Full-time" Foreground="{DynamicResource TextSecondaryBrush}" VerticalAlignment="Center" FontSize="11"/>
+                        <TextBlock Text="Visiting" Foreground="{DynamicResource TextSecondaryBrush}" VerticalAlignment="Center" FontSize="11"/>
+                    </StackPanel>
+
+                    <ScrollViewer Grid.Row="1">
+                        <StackPanel Spacing="10">
+                            <!-- Teacher Card Active -->
+                            <Border Background="{DynamicResource SurfaceLightBrush}" CornerRadius="12" Padding="15" BorderBrush="{DynamicResource PrimaryGreenBrush}" BorderThickness="2,0,0,0">
+                                <Grid ColumnDefinitions="32, *, Auto">
+                                    <Border Width="32" Height="32" Background="{DynamicResource AppBackgroundBrush}" CornerRadius="16">
+                                        <TextBlock Text="DK" FontSize="10" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                    </Border>
+                                    <StackPanel Grid.Column="1" Margin="10,0">
+                                        <TextBlock Text="Dr. Kemgou" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" FontSize="13" TextTrimming="CharacterEllipsis"/>
+                                        <TextBlock Text="Software Eng." Foreground="{DynamicResource TextSecondaryBrush}" FontSize="11" TextTrimming="CharacterEllipsis"/>
+                                        <StackPanel Orientation="Horizontal" Spacing="5" Margin="0,5,0,0" IsVisible="{Binding $parent[UserControl].Bounds.Width, Converter={StaticResource WidthToVisibilityConverter}, ConverterParameter=800}">
+                                             <TextBlock Text="12h" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="10"/>
+                                             <TextBlock Text="No Conflicts" Foreground="{DynamicResource PrimaryGreenBrush}" FontSize="10" FontWeight="Bold"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <Ellipse Grid.Column="2" Width="6" Height="6" Fill="{DynamicResource PrimaryGreenBrush}" VerticalAlignment="Top" Margin="0,4"/>
+                                </Grid>
+                            </Border>
+
+                            <!-- Other Teachers -->
+                            <Border Background="{DynamicResource SurfaceBrush}" CornerRadius="12" Padding="15">
+                                 <Grid ColumnDefinitions="32, *, Auto">
+                                    <Border Width="32" Height="32" Background="{DynamicResource AppBackgroundBrush}" CornerRadius="16"><TextBlock Text="PE" FontSize="10" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{DynamicResource TextSecondaryBrush}"/></Border>
+                                    <StackPanel Grid.Column="1" Margin="10,0">
+                                        <TextBlock Text="Pr. Eboa" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" FontSize="13" TextTrimming="CharacterEllipsis"/>
+                                        <TextBlock Text="Network Systems" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="11" TextTrimming="CharacterEllipsis"/>
+                                    </StackPanel>
+                                    <Ellipse Grid.Column="2" Width="6" Height="6" Fill="{DynamicResource AccentAmberBrush}" VerticalAlignment="Top" Margin="0,4"/>
+                                </Grid>
+                            </Border>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+
+                <!-- CENTER DETAIL COLUMN -->
+                <ScrollViewer Grid.Column="1" Margin="25,0">
+                    <StackPanel Spacing="25">
+                        
+                        <!-- Profile Highlight Card -->
+                        <Border Background="{DynamicResource SurfaceBrush}" CornerRadius="16" Padding="25">
+                            <Grid ColumnDefinitions="Auto, *, Auto">
+                                <Border Width="64" Height="64" Background="{DynamicResource SidebarBackgroundBrush}" CornerRadius="12">
+                                    <TextBlock Text="DK" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                </Border>
+                                <StackPanel Grid.Column="1" Margin="20,0">
+                                    <WrapPanel Orientation="Horizontal">
+                                        <TextBlock Text="Dr. Kemgou" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,10,0"/>
+                                        <Border Background="{DynamicResource PrimaryGreenBrush}" Opacity="0.2" CornerRadius="4" Padding="6,2" VerticalAlignment="Center">
+                                            <TextBlock Text="ACTIVE" Foreground="{DynamicResource PrimaryGreenBrush}" FontSize="10" FontWeight="Bold"/>
+                                        </Border>
+                                    </WrapPanel>
+                                    <TextBlock Text="Senior Lecturer • Computer Science" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="14" Margin="0,5" TextWrapping="Wrap"/>
+                                    <WrapPanel Orientation="Horizontal">
+                                        <TextBlock Text="✉ dr.kemgou@uyi.edu.cm" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12" Margin="0,0,20,0"/>
+                                        <TextBlock Text="📞 +237 699 00 00 00" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12"/>
+                                    </WrapPanel>
+                                </StackPanel>
+                                <StackPanel Grid.Column="2" Spacing="8" IsVisible="{Binding $parent[UserControl].Bounds.Width, Converter={StaticResource WidthToVisibilityConverter}, ConverterParameter=1000}">
+                                    <Button Content="✎ Edit" Background="{DynamicResource AppBackgroundBrush}" Foreground="{DynamicResource TextPrimaryBrush}" Padding="15,6" CornerRadius="6" FontSize="12"/>
+                                    <Button Content="👁 Audit" Background="{DynamicResource AppBackgroundBrush}" Foreground="{DynamicResource TextPrimaryBrush}" Padding="15,6" CornerRadius="6" FontSize="12"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+
+                        <!-- Assigned UEs (Responsive WrapPanel) -->
+                        <StackPanel Spacing="15">
+                            <TextBlock Text="⧉ Assigned UEs (Total Load: 12h/week)" Foreground="{DynamicResource TextPrimaryBrush}" FontWeight="SemiBold"/>
+                            <WrapPanel Orientation="Horizontal">
+                                <!-- UE Card 1 -->
+                                <Border Background="{DynamicResource SurfaceBrush}" CornerRadius="12" Padding="20" Margin="0,0,12,12" Width="200">
+                                    <StackPanel Spacing="10">
+                                        <Border Background="{DynamicResource AcademicBlueBrush}" HorizontalAlignment="Left" CornerRadius="4" Padding="6,2">
+                                            <TextBlock Text="L3 - GL" Foreground="White" FontSize="10" FontWeight="Bold"/>
+                                        </Border>
+                                        <TextBlock Text="ICT 305" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                        <TextBlock Text="Software Eng." Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12" TextWrapping="Wrap" Height="40"/>
+                                        <TextBlock Text="🕒 Mon 07, Wed 10" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="11" Margin="0,5,0,0"/>
+                                    </StackPanel>
+                                </Border>
+                                <!-- UE Card 2 -->
+                                <Border Background="{DynamicResource SurfaceBrush}" CornerRadius="12" Padding="20" Margin="0,0,12,12" Width="200">
+                                    <StackPanel Spacing="10">
+                                        <Border Background="#8E44AD" HorizontalAlignment="Left" CornerRadius="4" Padding="6,2">
+                                            <TextBlock Text="L2 - ICT" Foreground="White" FontSize="10" FontWeight="Bold"/>
+                                        </Border>
+                                        <TextBlock Text="ICT 203" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                        <TextBlock Text="Discrete Math" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12" TextWrapping="Wrap" Height="40"/>
+                                        <TextBlock Text="🕒 Fri 13-16" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="11" Margin="0,5,0,0"/>
+                                    </StackPanel>
+                                </Border>
+                                <!-- Assign New Button -->
+                                <Border BorderBrush="{DynamicResource SurfaceLightBrush}" BorderThickness="2" CornerRadius="12" Padding="20" Margin="0,0,12,12" Width="200" Height="150">
+                                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="8">
+                                        <TextBlock Text="⊕" FontSize="24" HorizontalAlignment="Center" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                        <TextBlock Text="Assign New UE" FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                    </StackPanel>
+                                </Border>
+                            </WrapPanel>
+                        </StackPanel>
+
+                        <!-- Desiderata (Availability Grid) -->
+                        <StackPanel Spacing="15">
+                            <Grid ColumnDefinitions="*, Auto">
+                                <TextBlock Text="📅 Desiderata (Availability)" Foreground="{DynamicResource TextPrimaryBrush}" FontWeight="SemiBold" FontSize="16"/>
+                                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="10" VerticalAlignment="Center" IsVisible="{Binding $parent[UserControl].Bounds.Width, Converter={StaticResource WidthToVisibilityConverter}, ConverterParameter=900}">
+                                    <StackPanel Orientation="Horizontal" Spacing="5"><Ellipse Width="8" Height="8" Fill="{DynamicResource PrimaryGreenBrush}"/><TextBlock Text="Pref" FontSize="10" Foreground="{DynamicResource TextSecondaryBrush}"/></StackPanel>
+                                    <StackPanel Orientation="Horizontal" Spacing="5"><Ellipse Width="8" Height="8" Fill="{DynamicResource SurfaceLightBrush}"/><TextBlock Text="Avail" FontSize="10" Foreground="{DynamicResource TextSecondaryBrush}"/></StackPanel>
+                                </StackPanel>
+                            </Grid>
+
+                            <Border Background="{DynamicResource SurfaceBrush}" CornerRadius="12" Padding="1">
+                                <ScrollViewer HorizontalScrollBarVisibility="Auto">
+                                    <Grid RowDefinitions="40, 40, 40, 40, 40" ColumnDefinitions="60, 80, 80, 80, 80, 80, 80" MinWidth="540">
+                                        <!-- Grid Content remains similar but wrapped in ScrollViewer for small widths -->
+                                        <!-- Days -->
+                                        <TextBlock Grid.Row="0" Grid.Column="1" Text="Mon" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                        <TextBlock Grid.Row="0" Grid.Column="2" Text="Tue" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                        <TextBlock Grid.Row="0" Grid.Column="3" Text="Wed" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                        <TextBlock Grid.Row="0" Grid.Column="4" Text="Thu" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                        <TextBlock Grid.Row="0" Grid.Column="5" Text="Fri" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                        <TextBlock Grid.Row="0" Grid.Column="6" Text="Sat" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                        <!-- Slots -->
+                                        <TextBlock Grid.Row="1" Grid.Column="0" Text="07-10" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="10" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                        <TextBlock Grid.Row="2" Grid.Column="0" Text="10-13" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="10" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                        <TextBlock Grid.Row="3" Grid.Column="0" Text="13-16" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="10" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                        <TextBlock Grid.Row="4" Grid.Column="0" Text="16-19" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="10" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                        <!-- Mock Cells -->
+                                        <Border Grid.Row="1" Grid.Column="1" Background="{DynamicResource SidebarBackgroundBrush}" Margin="1"/>
+                                        <Border Grid.Row="1" Grid.Column="3" Background="{DynamicResource PrimaryGreenBrush}" Opacity="0.1" Margin="1"/>
+                                        <Border Grid.Row="2" Grid.Column="2" Background="{DynamicResource PrimaryGreenBrush}" Opacity="0.1" Margin="1"/>
+                                        <Border Grid.Row="2" Grid.Column="5" Background="{DynamicResource AcademicBlueBrush}" Opacity="0.2" Margin="1"/>
+                                        <Border Grid.Row="3" Grid.Column="4" Background="{DynamicResource SidebarBackgroundBrush}" Margin="1"/>
+                                    </Grid>
+                                </ScrollViewer>
+                            </Border>
+                        </StackPanel>
+                    </StackPanel>
+                </ScrollViewer>
+
+                <!-- RIGHT STATS COLUMN -->
+                <StackPanel Grid.Column="2" Spacing="20" Margin="10,0,0,0" MinWidth="260">
+                    
+                    <Border Background="{DynamicResource SurfaceBrush}" CornerRadius="16" Padding="20">
+                        <StackPanel Spacing="15">
+                            <StackPanel Orientation="Horizontal" Spacing="10">
+                                <TextBlock Text="📙" FontSize="16"/>
+                                <TextBlock Text="Clash History &amp; Overrides" Foreground="{DynamicResource TextPrimaryBrush}" FontWeight="SemiBold"/>
+                            </StackPanel>
+                            
+                            <!-- Conflict Alert -->
+                            <Border Background="{DynamicResource AlertRedBrush}" Opacity="0.1" CornerRadius="12" Padding="15">
+                                <StackPanel Spacing="5">
+                                    <StackPanel Orientation="Horizontal" Spacing="10">
+                                        <TextBlock Text="⚠️" FontSize="12"/>
+                                        <TextBlock Text="Preference Overridden" Foreground="{DynamicResource AlertRedBrush}" FontWeight="Bold" FontSize="12"/>
+                                    </StackPanel>
+                                    <TextBlock Text="Assigned ICT 203 on Fri 13-16 despite 'Busy' status." Foreground="{DynamicResource TextSecondaryBrush}" FontSize="11" TextWrapping="Wrap"/>
+                                    <TextBlock Text="By Admin • 2 days ago" Foreground="{DynamicResource TextSecondaryBrush}" Opacity="0.6" FontSize="10" Margin="0,5,0,0"/>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Success Alert -->
+                            <Border Background="{DynamicResource PrimaryGreenBrush}" Opacity="0.1" CornerRadius="12" Padding="15">
+                                <StackPanel Spacing="5">
+                                    <StackPanel Orientation="Horizontal" Spacing="10">
+                                        <TextBlock Text="✅" FontSize="12"/>
+                                        <TextBlock Text="Constraint Satisfied" Foreground="{DynamicResource PrimaryGreenBrush}" FontWeight="Bold" FontSize="12"/>
+                                    </StackPanel>
+                                    <TextBlock Text="Wed 10-13 Preference respected for ICT 305." Foreground="{DynamicResource TextSecondaryBrush}" FontSize="11" TextWrapping="Wrap"/>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Background="{DynamicResource SurfaceBrush}" CornerRadius="16" Padding="20">
+                        <StackPanel Spacing="12">
+                            <TextBlock Text="Utilization Rate" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="13"/>
+                            <StackPanel Orientation="Horizontal" Spacing="10">
+                                <TextBlock Text="85%" FontSize="28" FontWeight="Black" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                <TextBlock Text="of max load" VerticalAlignment="Bottom" Margin="0,0,0,5" FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            </StackPanel>
+                            <ProgressBar Value="85" Height="10" Background="{DynamicResource SidebarBackgroundBrush}" Foreground="{DynamicResource PrimaryGreenBrush}" CornerRadius="5"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>
