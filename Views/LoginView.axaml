@@ -3,100 +3,70 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:TP203.ViewModels"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
              x:Class="TP203.Views.LoginView"
              x:DataType="vm:LoginViewModel">
 
-    <Grid Background="{DynamicResource AppBackgroundBrush}">
-        <!-- Abstract Background Decoration -->
-        <Canvas Opacity="0.5">
-            <Ellipse Width="400" Height="400" Fill="{DynamicResource AcademicBlueBrush}" Canvas.Left="-100" Canvas.Top="-100" Opacity="0.1">
-                <Ellipse.Effect>
-                    <BlurEffect Radius="100"/>
-                </Ellipse.Effect>
+    <Grid>
+        <!-- Background with animated-like gradient effect -->
+        <Canvas>
+            <Ellipse Width="600" Height="600" Fill="#206366F1" Margin="-200,-200,0,0">
+                <Ellipse.RenderTransform>
+                    <TranslateTransform X="50" Y="50"/>
+                </Ellipse.RenderTransform>
             </Ellipse>
-            <Ellipse Width="300" Height="300" Fill="{DynamicResource PrimaryGreenBrush}" Canvas.Right="-50" Canvas.Bottom="-50" Opacity="0.1">
-                <Ellipse.Effect>
-                    <BlurEffect Radius="100"/>
-                </Ellipse.Effect>
-            </Ellipse>
+            <Ellipse Width="400" Height="400" Fill="#15A855F7" Margin="400,200,0,0"/>
         </Canvas>
 
-        <Border Background="{DynamicResource SurfaceBrush}" 
-                CornerRadius="24" 
-                Padding="45" 
-                Width="450" 
-                VerticalAlignment="Center" 
-                HorizontalAlignment="Center"
-                BorderBrush="{DynamicResource SurfaceLightBrush}"
-                BorderThickness="1"
-                BoxShadow="0 20 50 0 #40000000">
-            <StackPanel Spacing="30">
-                <!-- Logo -->
-                <Border Width="60" Height="60" Background="{DynamicResource PrimaryGreenBrush}" CornerRadius="15" HorizontalAlignment="Center">
-                    <TextBlock Text="🎓" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="32"/>
-                </Border>
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="30">
+            <!-- Glass Card -->
+            <Border Classes="GlassCard" Width="400" Padding="40">
+                <StackPanel Spacing="25">
+                    <!-- Logo / Header -->
+                    <StackPanel Spacing="10" HorizontalAlignment="Center">
+                        <Border Width="60" Height="60" CornerRadius="15" Background="{StaticResource PrimaryGradient}">
+                            <PathIcon Data="{StaticResource lock_regular}" Width="30" Height="30" Foreground="White" />
+                        </Border>
+                        <TextBlock Text="Bienvenue" Classes="h1" FontSize="28" FontWeight="Bold" HorizontalAlignment="Center" Foreground="White"/>
+                        <TextBlock Text="Connectez-vous pour continuer" Foreground="{StaticResource TextDimmedBrush}" HorizontalAlignment="Center"/>
+                    </StackPanel>
 
-                <StackPanel Spacing="8">
-                    <TextBlock Text="BIENVENUE" 
-                               Foreground="{DynamicResource TextPrimaryBrush}" 
-                               FontSize="28" 
-                               FontWeight="Black" 
-                               LetterSpacing="2"
-                               HorizontalAlignment="Center"/>
-                    
-                    <TextBlock Text="Système de Gestion des Emplois du Temps" 
-                               Foreground="{DynamicResource TextSecondaryBrush}" 
-                               FontSize="14" 
+                    <!-- Form -->
+                    <StackPanel Spacing="15">
+                        <StackPanel Spacing="5">
+                            <TextBlock Text="Email" Foreground="{StaticResource TextBrush}" FontSize="14" Margin="5,0"/>
+                            <TextBox Text="{Binding Email}" Watermark="votre@email.com" />
+                        </StackPanel>
+
+                        <StackPanel Spacing="5">
+                            <TextBlock Text="Mot de passe" Foreground="{StaticResource TextBrush}" FontSize="14" Margin="5,0"/>
+                            <TextBox Text="{Binding Password}" PasswordChar="*" Watermark="••••••••" />
+                        </StackPanel>
+                    </StackPanel>
+
+                    <!-- Error Message -->
+                    <TextBlock Text="{Binding ErrorMessage}" 
+                               Foreground="#EF4444" 
                                HorizontalAlignment="Center" 
-                               TextAlignment="Center"/>
-                </StackPanel>
+                               IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
 
-                <StackPanel Spacing="15">
-                    <TextBox Watermark="Matricule / Identifiant" 
-                             Text="{Binding Username}"
-                             Height="50"
-                             Padding="15,0"
-                             VerticalContentAlignment="Center"
-                             Background="{DynamicResource AppBackgroundBrush}"
-                             BorderThickness="1"
-                             BorderBrush="{DynamicResource SurfaceLightBrush}"
-                             CornerRadius="12"/>
-                             
-                    <TextBox Watermark="Mot de passe" 
-                             PasswordChar="•" 
-                             Text="{Binding Password}"
-                             Height="50"
-                             Padding="15,0"
-                             VerticalContentAlignment="Center"
-                             Background="{DynamicResource AppBackgroundBrush}"
-                             BorderThickness="1"
-                             BorderBrush="{DynamicResource SurfaceLightBrush}"
-                             CornerRadius="12"/>
+                    <!-- Action Button -->
+                    <Button Classes="Primary" 
+                            Command="{Binding LoginCommand}" 
+                            IsEnabled="{Binding !IsBusy}"
+                            HorizontalAlignment="Stretch">
+                        <Panel>
+                            <TextBlock Text="Se connecter" IsVisible="{Binding !IsBusy}"/>
+                            <ProgressBar IsIndeterminate="True" Width="20" Height="20" IsVisible="{Binding IsBusy}" Foreground="White"/>
+                        </Panel>
+                    </Button>
                 </StackPanel>
-
-                <Button Content="Connexion Administrateur" 
-                        Command="{Binding LoginAsAdminCommand}"
-                        HorizontalAlignment="Stretch"
-                        HorizontalContentAlignment="Center"
-                        Height="50"
-                        Background="{DynamicResource PrimaryGreenBrush}"
-                        Foreground="{DynamicResource AppBackgroundBrush}"
-                        FontWeight="Bold"
-                        FontSize="16"
-                        CornerRadius="12"/>
-                
-                <StackPanel Spacing="15">
-                    <TextBlock Text="Ou se connecter en tant que :" Foreground="{DynamicResource TextSecondaryBrush}" HorizontalAlignment="Center" FontSize="12"/>
-                    <Grid ColumnDefinitions="*, 10, *, 10, *">
-                        <Button Grid.Column="0" Content="👨‍🏫 Prof" Command="{Binding LoginAsTeacherCommand}" Background="{DynamicResource SurfaceLightBrush}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" CornerRadius="10" Padding="0,10"/>
-                        <Button Grid.Column="2" Content="📑 Délégué" Command="{Binding LoginAsDelegateCommand}" Background="{DynamicResource SurfaceLightBrush}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" CornerRadius="10" Padding="0,10"/>
-                        <Button Grid.Column="4" Content="👨‍🎓 Étudiant" Command="{Binding LoginAsStudentCommand}" Background="{DynamicResource SurfaceLightBrush}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" CornerRadius="10" Padding="0,10"/>
-                    </Grid>
-                </StackPanel>
-                
-                <TextBlock Text="{Binding ErrorMessage}" Foreground="{DynamicResource AlertRedBrush}" HorizontalAlignment="Center" FontSize="12"/>
-            </StackPanel>
-        </Border>
+            </Border>
+            
+            <TextBlock Text="© 2026 TP203 System • Design Premium" 
+                       HorizontalAlignment="Center" 
+                       Foreground="{StaticResource TextDimmedBrush}" 
+                       FontSize="12"/>
+        </StackPanel>
     </Grid>
 </UserControl>

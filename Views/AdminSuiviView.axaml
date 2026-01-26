@@ -1,0 +1,86 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:TP203.ViewModels"
+             x:Class="TP203.Views.AdminSuiviView"
+             x:DataType="vm:AdminSuiviViewModel">
+    <Grid RowDefinitions="80, *">
+        <!-- Header -->
+        <Border Background="{StaticResource SurfaceBrush}" BorderBrush="{StaticResource GlassBorderColor}" BorderThickness="0,0,0,1" Padding="30,0">
+            <Grid ColumnDefinitions="*, Auto">
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock Text="Suivi des Enseignements" FontSize="20" FontWeight="Bold"/>
+                    <TextBlock Text="État d'avancement des programmes par UE" FontSize="12" Foreground="{StaticResource TextDimmedBrush}"/>
+                </StackPanel>
+                <Button Grid.Column="1" Classes="Primary" Content="+ Ajouter une UE" Command="{Binding AddUECommand}" />
+            </Grid>
+        </Border>
+        
+        <ScrollViewer Grid.Row="1" Padding="20" VerticalScrollBarVisibility="Auto">
+            <StackPanel Spacing="30">
+                
+                <!-- Progress Grid -->
+                <ItemsControl ItemsSource="{Binding Ues}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Classes="GlassCard" Width="320" Margin="0,0,20,20" Padding="20">
+                                <StackPanel Spacing="15">
+                                    <Grid ColumnDefinitions="*, Auto">
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding Code}" FontWeight="ExtraBold" FontSize="16" Foreground="{StaticResource AccentPrimaryBrush}"/>
+                                            <TextBlock Text="{Binding Nom}" FontSize="13" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"/>
+                                        </StackPanel>
+                                        <Border Grid.Column="1" Background="#15FFFFFF" CornerRadius="4" Padding="6,2" VerticalAlignment="Top">
+                                            <TextBlock Text="{Binding Progression, StringFormat='\{0:0\}%'}" FontSize="12" FontWeight="Bold"/>
+                                        </Border>
+                                    </Grid>
+
+                                    <!-- Progress Bar -->
+                                    <ProgressBar Value="{Binding Progression}" Height="8" CornerRadius="4"
+                                                 Background="#10FFFFFF" 
+                                                 Foreground="{StaticResource PrimaryGradient}"/>
+
+                                    <Grid ColumnDefinitions="*, Auto">
+                                        <StackPanel Orientation="Horizontal" Spacing="4">
+                                            <TextBlock Text="{Binding VolumeHoraireEffectue}" FontWeight="Bold"/>
+                                            <TextBlock Text="/" Opacity="0.5"/>
+                                            <TextBlock Text="{Binding VolumeHoraireTotal}" Opacity="0.8"/>
+                                            <TextBlock Text="heures" FontSize="10" VerticalAlignment="Bottom" Margin="2,0,0,2"/>
+                                        </StackPanel>
+                                        <TextBlock Grid.Column="1" Text="En cours" FontSize="10" VerticalAlignment="Center"/>
+                                    </Grid>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <!-- Section Rapports -->
+                <StackPanel Spacing="15">
+                    <TextBlock Text="Analyse et Rapports de Service" FontWeight="SemiBold" FontSize="16" Foreground="{StaticResource AccentPrimaryBrush}"/>
+                    <Grid ColumnDefinitions="*, *">
+                        <Border Grid.Column="0" Classes="GlassCard" Padding="20" Margin="0,0,10,0">
+                            <StackPanel Spacing="10">
+                                <TextBlock Text="Litiges de Validation" FontWeight="Bold"/>
+                                <Separator Background="{StaticResource GlassBorderColor}" Height="1"/>
+                                <TextBlock Text="Aucun conflit détecté entre Professeurs et Délégués." Foreground="{StaticResource TPBrush}" FontSize="13" Opacity="0.8"/>
+                            </StackPanel>
+                        </Border>
+                        <Border Grid.Column="1" Classes="GlassCard" Padding="20" Margin="10,0,0,0">
+                            <StackPanel Spacing="10">
+                                <TextBlock Text="Prévision de Clôture" FontWeight="Bold"/>
+                                <Separator Background="{StaticResource GlassBorderColor}" Height="1"/>
+                                <TextBlock Text="L'UE MAT201 nécessite une programmation intensive pour finir dans les temps." FontSize="13" Foreground="{StaticResource HighlightBrush}" Opacity="0.8"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </StackPanel>
+                
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

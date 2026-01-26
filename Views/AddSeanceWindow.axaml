@@ -1,0 +1,116 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:TP203.ViewModels"
+        x:Class="TP203.Views.AddSeanceWindow"
+        x:DataType="vm:AddSeanceViewModel"
+        Width="600" Height="550"
+        WindowStartupLocation="CenterOwner"
+        SystemDecorations="None"
+        Background="Transparent"
+        TransparencyLevelHint="AcrylicBlur"
+        ExtendClientAreaToDecorationsHint="True">
+
+    <Border Background="{StaticResource SurfaceBrush}" BorderBrush="{StaticResource GlassBorderColor}" BorderThickness="1" CornerRadius="12" ClipToBounds="True">
+        <Grid RowDefinitions="60, *, 80">
+            <!-- Header -->
+            <Border Background="#10FFFFFF" Padding="20">
+                <Grid ColumnDefinitions="*, Auto">
+                    <TextBlock Text="Programmer une Nouvelle Séance" FontWeight="Bold" FontSize="18"/>
+                    <Button Grid.Column="1" Command="{Binding CancelCommand}" Content="✕" Background="Transparent" Foreground="{StaticResource TextDimmedBrush}" Padding="5"/>
+                </Grid>
+            </Border>
+
+            <!-- Form -->
+            <ScrollViewer Grid.Row="1" Padding="30">
+                <StackPanel Spacing="20">
+                    
+                    <!-- Filière & UE Row -->
+                    <Grid ColumnDefinitions="*, 20, *">
+                        <StackPanel Grid.Column="0" Spacing="8">
+                            <TextBlock Text="Filière (Classe)" FontSize="12" Foreground="{StaticResource TextDimmedBrush}"/>
+                            <ComboBox ItemsSource="{Binding AvailableFilieres}" SelectedItem="{Binding SelectedFiliere}" 
+                                      PlaceholderText="Ex: ICT-L2" HorizontalAlignment="Stretch">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Code}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </StackPanel>
+                         <StackPanel Grid.Column="2" Spacing="8">
+                            <TextBlock Text="Matière (UE)" FontSize="12" Foreground="{StaticResource TextDimmedBrush}"/>
+                            <ComboBox ItemsSource="{Binding AvailableUEs}" SelectedItem="{Binding SelectedUE}" 
+                                      PlaceholderText="Ex: ICT203" HorizontalAlignment="Stretch">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Code_UE}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- Prof & Salle Row -->
+                    <Grid ColumnDefinitions="*, 20, *">
+                        <StackPanel Grid.Column="0" Spacing="8">
+                            <TextBlock Text="Enseignant" FontSize="12" Foreground="{StaticResource TextDimmedBrush}"/>
+                            <ComboBox ItemsSource="{Binding AvailableProfs}" SelectedItem="{Binding SelectedProf}" 
+                                      PlaceholderText="Assigner un prof..." HorizontalAlignment="Stretch">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Name}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </StackPanel>
+                         <StackPanel Grid.Column="2" Spacing="8">
+                            <TextBlock Text="Salle" FontSize="12" Foreground="{StaticResource TextDimmedBrush}"/>
+                            <ComboBox ItemsSource="{Binding AvailableSalles}" SelectedItem="{Binding SelectedSalle}" 
+                                      PlaceholderText="Choisir une salle..." HorizontalAlignment="Stretch">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Nom}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- Date -->
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="Date de la séance" FontSize="12" Foreground="{StaticResource TextDimmedBrush}"/>
+                        <DatePicker SelectedDate="{Binding SelectedDate}" HorizontalAlignment="Stretch"/>
+                    </StackPanel>
+
+                    <!-- Horaires Row -->
+                    <Grid ColumnDefinitions="*, 20, *, 20, *">
+                        <StackPanel Grid.Column="0" Spacing="8">
+                            <TextBlock Text="Heure Début" FontSize="12" Foreground="{StaticResource TextDimmedBrush}"/>
+                            <TimePicker SelectedTime="{Binding StartTime}" MinuteIncrement="15" ClockIdentifier="24HourClock" HorizontalAlignment="Stretch"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="2" Spacing="8">
+                            <TextBlock Text="Heure Fin" FontSize="12" Foreground="{StaticResource TextDimmedBrush}"/>
+                            <TimePicker SelectedTime="{Binding EndTime}" MinuteIncrement="15" ClockIdentifier="24HourClock" HorizontalAlignment="Stretch"/>
+                        </StackPanel>
+                         <StackPanel Grid.Column="4" Spacing="8">
+                            <TextBlock Text="Type" FontSize="12" Foreground="{StaticResource TextDimmedBrush}"/>
+                            <ComboBox ItemsSource="{Binding AvailableTypes}" SelectedItem="{Binding SelectedType}" HorizontalAlignment="Stretch"/>
+                        </StackPanel>
+                    </Grid>
+
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- Actions -->
+            <Border Grid.Row="2" Background="#05FFFFFF" Padding="20">
+                <Grid ColumnDefinitions="*, Auto">
+                    <TextBlock Text="{Binding ErrorMessage}" Foreground="#EF4444" VerticalAlignment="Center" FontSize="12" Margin="0,0,20,0" TextWrapping="Wrap"/>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="15">
+                        <Button Classes="Secondary" Content="Annuler" Command="{Binding CancelCommand}" Width="100" IsEnabled="{Binding !IsBusy}"/>
+                        <Button Classes="Primary" Content="Enregistrer" Command="{Binding SaveCommand}" Width="150" IsEnabled="{Binding !IsBusy}"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+    </Border>
+</Window>

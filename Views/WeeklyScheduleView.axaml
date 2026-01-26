@@ -1,0 +1,93 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:models="using:TP203.ViewModels"
+             x:Class="TP203.Views.WeeklyScheduleView"
+             x:DataType="models:WeeklyScheduleViewModel">
+             
+    <UserControl.Resources>
+        <DataTemplate x:Key="DayColumnTemplate" DataType="models:DaySchedule">
+            <Border Width="220" Margin="0,0,15,0">
+                <Grid RowDefinitions="Auto, *">
+                    <!-- Date Header with Grid line below -->
+                    <Border Height="60" Background="#15FFFFFF" BorderBrush="#30FFFFFF" BorderThickness="1,1,1,0" CornerRadius="12,12,0,0" Padding="15,10" Margin="0,0,0,5">
+                         <Grid ColumnDefinitions="*, Auto">
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="{Binding DayName}" FontWeight="Bold" Foreground="{StaticResource AccentPrimaryBrush}" FontSize="16"/>
+                                <TextBlock Text="{Binding Date, StringFormat='ddMMM'}" FontSize="12" Opacity="0.5" FontWeight="SemiBold"/>
+                            </StackPanel>
+                            <PathIcon Grid.Column="1" Data="{StaticResource calendar_regular}" Opacity="0.2" Width="20" Height="20"/>
+                         </Grid>
+                    </Border>
+                    
+                    <!-- Timeline verticale avec lignes de grille -->
+                    <Border Grid.Row="1" Background="#05FFFFFF" BorderBrush="#20FFFFFF" BorderThickness="1" CornerRadius="0,0,12,12" ClipToBounds="True">
+                        <Grid>
+                            <!-- Grid Lines Background (Fake hours) -->
+                            <StackPanel Opacity="0.1">
+                                <Border Height="60" BorderBrush="White" BorderThickness="0,0,0,1"/> <!-- 08:00 -->
+                                <Border Height="60" BorderBrush="White" BorderThickness="0,0,0,1"/>
+                                <Border Height="60" BorderBrush="White" BorderThickness="0,0,0,1"/>
+                                <Border Height="60" BorderBrush="White" BorderThickness="0,0,0,1"/>
+                                <Border Height="60" BorderBrush="White" BorderThickness="0,0,0,1"/> <!-- 12:00 -->
+                                <Border Height="60" BorderBrush="White" BorderThickness="0,0,0,1"/>
+                                <Border Height="60" BorderBrush="White" BorderThickness="0,0,0,1"/>
+                                <Border Height="60" BorderBrush="White" BorderThickness="0,0,0,1"/>
+                            </StackPanel>
+
+                            <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="0,0,2,0">
+                                <ItemsControl ItemsSource="{Binding Seances}" Margin="8">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border CornerRadius="12" Padding="0" Margin="0,0,0,12" BoxShadow="0 4 8 0 #15000000">
+                                                 <Border.Background>
+                                                     <VisualBrush TileMode="None" Stretch="Fill">
+                                                         <VisualBrush.Visual>
+                                                             <Border Background="#15FFFFFF" Width="200" Height="100"/>
+                                                         </VisualBrush.Visual>
+                                                     </VisualBrush>
+                                                 </Border.Background>
+                                                 
+                                                <Grid ColumnDefinitions="6, *">
+                                                    <!-- Color Indicator Strip -->
+                                                    <Border Width="6" CornerRadius="6,0,0,6" 
+                                                            Background="{Binding Type, Converter={x:Static StringConverters.IsNotNullOrEmpty}, FallbackValue='#6366F1'}"
+                                                            VerticalAlignment="Stretch"/>
+                                                    
+                                                    <StackPanel Grid.Column="1" Margin="12" Spacing="4">
+                                                        <Grid ColumnDefinitions="*, Auto">
+                                                            <Border Background="#15FFFFFF" CornerRadius="4" Padding="6,2">
+                                                                <TextBlock Text="{Binding PlageHoraire}" FontSize="10" FontWeight="Bold"/>
+                                                            </Border>
+                                                            
+                                                            <!-- Admin Edit Icon : Bound to Parent IsReadOnly (Simplified via Opacity for now or specialized binding later) -->
+                                                            <PathIcon Grid.Column="1" Data="{StaticResource settings_regular}" Width="12" Height="12" Opacity="0.3" 
+                                                                      IsVisible="{Binding $parent[UserControl].((models:WeeklyScheduleViewModel)DataContext).IsAdminMode}"/> 
+                                                        </Grid>
+                                                        
+                                                        <TextBlock Text="{Binding UE.Code}" FontWeight="ExtraBold" FontSize="15" Margin="0,5,0,0"/>
+                                                        <TextBlock Text="{Binding Salle.Nom}" FontSize="11" Opacity="0.9"/>
+                                                        <TextBlock Text="{Binding Enseignant.Name}" FontSize="10" Foreground="{StaticResource AccentSecondaryBrush}" FontStyle="Italic"/>
+                                                    </StackPanel>
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ScrollViewer>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Border>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" Padding="0">
+        <ItemsControl ItemsSource="{Binding Days}" ItemTemplate="{StaticResource DayColumnTemplate}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" Spacing="0"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
+    </ScrollViewer>
+</UserControl>

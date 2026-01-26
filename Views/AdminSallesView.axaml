@@ -1,0 +1,100 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:TP203.ViewModels"
+             x:Class="TP203.Views.AdminSallesView"
+             x:DataType="vm:AdminSallesViewModel">
+    <Grid RowDefinitions="80, *">
+        <Border Background="{StaticResource SurfaceBrush}" BorderBrush="{StaticResource GlassBorderColor}" BorderThickness="0,0,0,1" Padding="30,0">
+            <Grid ColumnDefinitions="*, Auto">
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock Text="Gestion des Infrastructures" FontSize="20" FontWeight="Bold"/>
+                    <TextBlock Text="Vue détaillée du parc immobilier et des capacités" FontSize="12" Foreground="{StaticResource TextDimmedBrush}"/>
+                </StackPanel>
+                <Button Grid.Column="1" Classes="Primary" Content="+ Ajouter une Salle" Command="{Binding AddSalleCommand}" />
+            </Grid>
+        </Border>
+        
+        <!-- Main Content with Scroll -->
+        <ScrollViewer Grid.Row="1" Padding="20" VerticalScrollBarVisibility="Auto">
+            <StackPanel Spacing="20">
+                
+                <!-- KPI Header -->
+                <UniformGrid Columns="3">
+                     <Border Classes="GlassCard" Padding="15" Margin="0,0,10,0">
+                        <StackPanel Spacing="2">
+                            <TextBlock Text="Total Places" FontSize="11" Foreground="{StaticResource TextDimmedBrush}"/>
+                            <TextBlock Text="1,240" FontSize="24" FontWeight="Bold"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Classes="GlassCard" Padding="15" Margin="0,0,10,0">
+                        <StackPanel Spacing="2">
+                            <TextBlock Text="Salles Disponibles" FontSize="11" Foreground="{StaticResource TextDimmedBrush}"/>
+                            <TextBlock Text="4/8" FontSize="24" FontWeight="Bold" Foreground="{StaticResource AccentPrimaryBrush}"/>
+                        </StackPanel>
+                    </Border>
+                     <Border Classes="GlassCard" Padding="15">
+                        <StackPanel Spacing="2">
+                            <TextBlock Text="Taux d'Occupation" FontSize="11" Foreground="{StaticResource TextDimmedBrush}"/>
+                            <TextBlock Text="68%" FontSize="24" FontWeight="Bold"/>
+                        </StackPanel>
+                    </Border>
+                </UniformGrid>
+
+                <TextBlock Text="Liste des Espaces Pédagogiques" FontWeight="SemiBold" Foreground="{StaticResource AccentPrimaryBrush}" Margin="0,5,0,0"/>
+                
+                <ItemsControl ItemsSource="{Binding SalesDisplay}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Classes="GlassCard" Width="260" Margin="0,0,15,15" Padding="0">
+                                <StackPanel>
+                                    <!-- Card Header Image Placeholder -->
+                                    <Border Height="90" Background="#20FFFFFF" CornerRadius="20,20,0,0" ClipToBounds="True">
+                                        <Panel>
+                                            <PathIcon Data="{StaticResource home_regular}" Width="32" Height="32" Opacity="0.1"/>
+                                            <Border Background="{StaticResource PrimaryGradient}" Padding="6,3" CornerRadius="4" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="10">
+                                                <TextBlock Text="{Binding Type}" FontSize="9" FontWeight="Bold" Foreground="White"/>
+                                            </Border>
+                                        </Panel>
+                                    </Border>
+                                    
+                                    <!-- Content -->
+                                    <StackPanel Spacing="10" Margin="15">
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding Nom}" FontSize="16" FontWeight="Bold"/>
+                                            <TextBlock Text="{Binding Equipements}" FontSize="10" Foreground="{StaticResource TextDimmedBrush}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"/>
+                                        </StackPanel>
+                                        
+                                        <UniformGrid Columns="2">
+                                            <StackPanel>
+                                                <TextBlock Text="Capacité" FontSize="10" Foreground="{StaticResource TextDimmedBrush}"/>
+                                                <StackPanel Orientation="Horizontal" Spacing="5">
+                                                     <PathIcon Data="{StaticResource users_regular}" Width="14" Height="14"/>
+                                                     <TextBlock Text="{Binding Capacite}" FontWeight="SemiBold"/>
+                                                </StackPanel>
+                                            </StackPanel>
+                                            <StackPanel>
+                                                <TextBlock Text="Occupation" FontSize="10" Foreground="{StaticResource TextDimmedBrush}"/>
+                                                <TextBlock Text="{Binding TauxOccupation, StringFormat='\{0\}%'}" FontWeight="SemiBold" Foreground="{StaticResource AccentSecondaryBrush}"/>
+                                            </StackPanel>
+                                        </UniformGrid>
+
+                                        <!-- Jauge visuelle -->
+                                        <ProgressBar Value="{Binding TauxOccupation}" Height="4" Background="#10FFFFFF" Foreground="{StaticResource AccentSecondaryBrush}"/>
+
+                                        <Button Content="Gérer" Background="Transparent" BorderBrush="{StaticResource GlassBorderColor}" BorderThickness="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

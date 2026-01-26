@@ -1,5 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System.Threading.Tasks;
+using TP203.Services;
 
 namespace TP203.ViewModels;
 
@@ -8,13 +10,16 @@ public partial class LoginViewModel : ViewModelBase
     private readonly MainWindowViewModel _mainViewModel;
 
     [ObservableProperty]
-    private string _username = "";
+    private string _email = string.Empty; // Used as Login
 
     [ObservableProperty]
-    private string _password = "";
+    private string _password = string.Empty;
 
     [ObservableProperty]
-    private string _errorMessage = "";
+    private bool _isBusy;
+
+    [ObservableProperty]
+    private string _errorMessage = string.Empty;
 
     public LoginViewModel(MainWindowViewModel mainViewModel)
     {
@@ -22,27 +27,44 @@ public partial class LoginViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    public void LoginAsAdmin()
+    private async Task LoginAsync()
     {
-        // Simulate Login
-        _mainViewModel.NavigateToDashboard("Admin");
-    }
+        ErrorMessage = string.Empty;
+        IsBusy = true;
 
-    [RelayCommand]
-    public void LoginAsTeacher()
-    {
-        _mainViewModel.NavigateToDashboard("Teacher");
-    }
+        try
+        {
+            if (string.IsNullOrEmpty(Email) || string.IsNullOrEmpty(Password))
+            {
+                ErrorMessage = "Veuillez remplir tous les champs";
+                return;
+            }
 
-    [RelayCommand]
-    public void LoginAsDelegate()
-    {
-        _mainViewModel.NavigateToDashboard("Delegate");
-    }
+            // Real API Call
+            var (user, error) = await ApiService.LoginAsync(Email, Password);
 
-     [RelayCommand]
-    public void LoginAsStudent()
-    {
-        _mainViewModel.NavigateToDashboard("Student");
+            if (user != null)
+            {
+                string roleName = user.Role.ToString();
+                
+                // Fallback / Patch for Type 0 or unknown
+                if (user.Type == 0 || roleName == "0") roleName = "Admin";
+
+                _mainViewModel.NavigateToDashboard(roleName);
+            }
+            else
+            {
+                ErrorMessage = error ?? "Identifiants invalides";
+            }
+        }
+        catch (System.Exception ex)
+        {
+            ErrorMessage = "Erreur de connexion serveur";
+            System.Diagnostics.Debug.WriteLine(ex.Message);
+        }
+        finally
+        {
+            IsBusy = false;
+        }
     }
 }

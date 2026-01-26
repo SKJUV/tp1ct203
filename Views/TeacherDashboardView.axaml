@@ -1,0 +1,43 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:TP203.ViewModels"
+             xmlns:views="using:TP203.Views"
+             x:Class="TP203.Views.TeacherDashboardView"
+             x:DataType="vm:TeacherDashboardViewModel">
+
+    <Grid RowDefinitions="Auto, *">
+        <!-- Header -->
+        <Border Height="70" Background="{StaticResource SurfaceBrush}" BorderBrush="{StaticResource GlassBorderColor}" BorderThickness="0,0,0,1" Padding="20,0">
+            <Grid ColumnDefinitions="*, Auto">
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock Text="Espace Enseignant" FontSize="18" FontWeight="Bold"/>
+                    <TextBlock Text="{Binding TeacherName}" FontSize="12" Foreground="{StaticResource AccentSecondaryBrush}"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="15" VerticalAlignment="Center">
+                    <Button Classes="Secondary" Content="Mes Disponibilités"/>
+                    <Button Background="Transparent" Command="{Binding LogoutCommand}">
+                         <PathIcon Data="{StaticResource logout_regular}" Width="18" Height="18" Foreground="#EF4444"/>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Main Content (Full Height, no global scroll) -->
+        <Grid Grid.Row="1" ColumnDefinitions="*" RowDefinitions="Auto, *">
+            <!-- Alert Banner -->
+            <Border Classes="GlassCard" Padding="15" Margin="20,20,20,0" Background="#10F59E0B">
+                <StackPanel Spacing="5">
+                    <TextBlock Text="Action Requise" FontWeight="Bold" Foreground="#F59E0B"/>
+                    <TextBlock Text="Vous n'avez pas encore validé les heures du cours MAT201 (Lundi dernier)." TextWrapping="Wrap" Opacity="0.8"/>
+                    <Button Content="Valider maintenant" Background="Transparent" BorderBrush="#F59E0B" BorderThickness="1" HorizontalAlignment="Left" Foreground="#F59E0B"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Schedule Takes Remaining Space -->
+            <Border Grid.Row="1" Padding="20">
+                <views:WeeklyScheduleView DataContext="{Binding ScheduleViewModel}" />
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

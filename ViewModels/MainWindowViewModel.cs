@@ -14,15 +14,14 @@ public partial class MainWindowViewModel : ViewModelBase
 
     public void NavigateToDashboard(string role)
     {
-        // In a real app, we would pass the specific user context
-        if (role == "Admin")
+        CurrentViewModel = role switch
         {
-            CurrentViewModel = new AdminDashboardViewModel(this);
-        }
-        else
-        {
-             CurrentViewModel = new MobileDashboardViewModel(this, role);
-        }
+            "Admin" => new AdminDashboardViewModel(this),
+            "Enseignant" => new TeacherDashboardViewModel(this),
+            "Etudiant" => new StudentDashboardViewModel(this),
+            "Delegue" => new MobileDashboardViewModel(this, role),
+            _ => new LoginViewModel(this) // Fallback to login if unknown
+        };
     }
     
     public void Logout()

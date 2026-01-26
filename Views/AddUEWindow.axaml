@@ -1,0 +1,77 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:TP203.ViewModels"
+        x:Class="TP203.Views.AddUEWindow"
+        x:DataType="vm:AddUEViewModel"
+        Width="500" Height="500"
+        WindowStartupLocation="CenterOwner"
+        SystemDecorations="None"
+        Background="Transparent"
+        TransparencyLevelHint="AcrylicBlur"
+        ExtendClientAreaToDecorationsHint="True">
+
+    <Border Background="{StaticResource SurfaceBrush}" BorderBrush="{StaticResource GlassBorderColor}" BorderThickness="1" CornerRadius="12" ClipToBounds="True">
+        <Grid RowDefinitions="60, *, 80">
+            <!-- Header -->
+            <Border Background="#10FFFFFF" Padding="20">
+                <Grid ColumnDefinitions="*, Auto">
+                    <TextBlock Text="Ajouter une Unité d'Enseignement" FontWeight="Bold" FontSize="18"/>
+                    <Button Grid.Column="1" Command="{Binding CancelCommand}" Content="✕" Background="Transparent" Foreground="{StaticResource TextDimmedBrush}" Padding="5"/>
+                </Grid>
+            </Border>
+
+            <!-- Form -->
+            <ScrollViewer Grid.Row="1" Padding="30">
+                <StackPanel Spacing="20">
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="Code UE" FontSize="12" Foreground="{StaticResource TextDimmedBrush}"/>
+                        <TextBox Text="{Binding CodeUE}" Watermark="Ex: ICT203"/>
+                    </StackPanel>
+
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="Intitulé" FontSize="12" Foreground="{StaticResource TextDimmedBrush}"/>
+                        <TextBox Text="{Binding Intitule}" Watermark="Ex: Génie Logiciel"/>
+                    </StackPanel>
+
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="Volume Horaire Total" FontSize="12" Foreground="{StaticResource TextDimmedBrush}"/>
+                        <NumericUpDown Value="{Binding VolumeHoraireTotal}" Minimum="1" Maximum="200" HorizontalAlignment="Stretch"/>
+                    </StackPanel>
+
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="Niveau / Classe" FontSize="12" Foreground="{StaticResource TextDimmedBrush}"/>
+                        <ComboBox ItemsSource="{Binding AvailableNiveaux}" SelectedItem="{Binding SelectedNiveau}" HorizontalAlignment="Stretch">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Code}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </StackPanel>
+
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="Enseignant Responsable" FontSize="12" Foreground="{StaticResource TextDimmedBrush}"/>
+                        <ComboBox ItemsSource="{Binding AvailableEnseignants}" SelectedItem="{Binding SelectedEnseignant}" HorizontalAlignment="Stretch">
+                             <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Name}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </StackPanel>
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- Actions -->
+            <Border Grid.Row="2" Background="#05FFFFFF" Padding="20">
+                <Grid ColumnDefinitions="*, Auto">
+                    <TextBlock Text="{Binding ErrorMessage}" Foreground="#EF4444" VerticalAlignment="Center" FontSize="12" Margin="0,0,20,0" TextWrapping="Wrap"/>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="15">
+                        <Button Classes="Secondary" Content="Annuler" Command="{Binding CancelCommand}" Width="100" IsEnabled="{Binding !IsBusy}"/>
+                        <Button Classes="Primary" Content="Enregistrer" Command="{Binding SaveCommand}" Width="150" IsEnabled="{Binding !IsBusy}"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+    </Border>
+</Window>

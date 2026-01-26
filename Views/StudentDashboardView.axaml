@@ -1,0 +1,47 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:TP203.ViewModels"
+             xmlns:views="using:TP203.Views"
+             x:Class="TP203.Views.StudentDashboardView"
+             x:DataType="vm:StudentDashboardViewModel">
+
+    <Grid RowDefinitions="Auto, *">
+        <!-- Header -->
+        <Border Height="70" Background="{StaticResource BgDarkBrush}" BorderBrush="{StaticResource GlassBorderColor}" BorderThickness="0,0,0,1" Padding="20,0">
+            <Grid ColumnDefinitions="*, Auto">
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock Text="Mon Planning" FontSize="20" FontWeight="Bold"/>
+                    <StackPanel Orientation="Horizontal" Spacing="5">
+                         <TextBlock Text="{Binding StudentName}" FontSize="12" Foreground="{StaticResource TextDimmedBrush}"/>
+                         <TextBlock Text="•" Foreground="{StaticResource TextDimmedBrush}"/>
+                         <TextBlock Text="{Binding ClasseName}" FontSize="12" Foreground="{StaticResource AccentPrimaryBrush}" FontWeight="Bold"/>
+                    </StackPanel>
+                </StackPanel>
+
+                 <Button Grid.Column="1" Background="Transparent" Command="{Binding LogoutCommand}">
+                     <PathIcon Data="{StaticResource logout_regular}" Width="18" Height="18" Foreground="#EF4444"/>
+                </Button>
+            </Grid>
+        </Border>
+
+        <!-- Main Content (Full Height) -->
+        <Grid Grid.Row="1" RowDefinitions="Auto, *">
+             <!-- Next Course Highlight in Top Row -->
+             <Border Classes="GlassCard" Padding="20" Margin="20" Background="{StaticResource PrimaryGradient}">
+                <Grid ColumnDefinitions="*, Auto">
+                    <StackPanel Spacing="5">
+                        <TextBlock Text="PROCHAIN COURS" FontSize="10" Opacity="0.8" LetterSpacing="1" FontWeight="Bold" Foreground="White"/>
+                        <TextBlock Text="ICT203 - Génie Logiciel" FontSize="22" FontWeight="Bold" Foreground="White"/>
+                        <TextBlock Text="Dans 15 minutes • Amphi 100" FontSize="14" Foreground="White"/>
+                    </StackPanel>
+                    <PathIcon Grid.Column="1" Data="{StaticResource calendar_regular}" Width="40" Height="40" Opacity="0.2" Foreground="White"/>
+                </Grid>
+            </Border>
+
+            <!-- Schedule fills the rest -->
+            <Border Grid.Row="1" Padding="20,0,20,20">
+                 <views:WeeklyScheduleView DataContext="{Binding ScheduleViewModel}" />
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

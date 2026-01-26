@@ -3,13 +3,12 @@
         xmlns:vm="using:TP203.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="800"
         x:Class="TP203.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
-        Icon="/Assets/avalonia-logo.ico"
-        Title="TP203 - Gestion des Emplois du Temps"
-        TransparencyLevelHint="AcrylicBlur"
-        Background="{DynamicResource LightBackgroundBrush}"
+        Title="TP203"
+        Background="#0A0B10"
+        MinWidth="1024" MinHeight="720"
         WindowStartupLocation="CenterScreen"
         FontFamily="{StaticResource MainFont}">
 
@@ -17,6 +16,20 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-    <ContentControl Content="{Binding CurrentViewModel}" />
+    <Panel Margin="0,20,0,0">
+        <!-- Experimental Background Glow -->
+        <Canvas IsHitTestVisible="False">
+            <Ellipse Width="800" Height="800" Fill="#106366F1" Margin="-300,-400,0,0">
+                <Ellipse.Effect>
+                    <BlurEffect Radius="100"/>
+                </Ellipse.Effect>
+            </Ellipse>
+        </Canvas>
 
+        <TransitioningContentControl Content="{Binding CurrentViewModel}">
+            <TransitioningContentControl.PageTransition>
+                <CrossFade Duration="0:0:0.5" />
+            </TransitioningContentControl.PageTransition>
+        </TransitioningContentControl>
+    </Panel>
 </Window>

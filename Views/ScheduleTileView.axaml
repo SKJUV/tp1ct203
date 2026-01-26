@@ -1,0 +1,49 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:models="using:TP203.Models"
+             x:Class="TP203.Views.ScheduleTileView"
+             x:DataType="models:Seance">
+    
+    <Border Classes="GlassCard" Margin="5" Padding="0" ClipToBounds="True" Height="100">
+        <Grid ColumnDefinitions="6, *">
+            <!-- Left bar indicator for session type -->
+            <Rectangle x:Name="TypeIndicator" Width="6" VerticalAlignment="Stretch">
+                <Rectangle.Styles>
+                    <Style Selector="Rectangle">
+                        <!-- Default to CM -->
+                        <Setter Property="Fill" Value="{StaticResource CMBrush}"/>
+                    </Style>
+                    <!-- We use converters or binding with styles if possible, 
+                         but for now let's use a simple background binding logic in code behind or XAML -->
+                </Rectangle.Styles>
+            </Rectangle>
+
+            <Border Grid.Column="1" Padding="15,10">
+                <Grid RowDefinitions="Auto, *, Auto">
+                    <!-- 1. Plage Horaire -->
+                    <TextBlock Grid.Row="0" Text="{Binding PlageHoraire}" 
+                               FontSize="11" FontWeight="Bold" Foreground="{StaticResource TextDimmedBrush}"/>
+                    
+                    <StackPanel Grid.Row="1" VerticalAlignment="Center" Spacing="2">
+                        <!-- 2. Code UE -->
+                        <TextBlock Text="{Binding UE.Code}" FontSize="16" FontWeight="ExtraBold" Foreground="White" />
+                        <!-- 3. Nom de l'intervenant -->
+                        <TextBlock Text="{Binding Enseignant.Name}" FontSize="12" Foreground="{StaticResource AccentPrimaryBrush}" Opacity="0.9"/>
+                    </StackPanel>
+
+                    <Grid Grid.Row="2" ColumnDefinitions="*, Auto">
+                        <!-- 4. Salle affectée -->
+                        <StackPanel Orientation="Horizontal" Spacing="5">
+                            <PathIcon Data="{StaticResource home_regular}" Width="12" Height="12" Opacity="0.5"/>
+                            <TextBlock Text="{Binding Salle.Nom}" FontSize="11" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        
+                        <!-- 5. Date précise -->
+                        <TextBlock Grid.Column="1" Text="{Binding DisplayDate}" 
+                                   FontSize="11" Opacity="0.5" VerticalAlignment="Center"/>
+                    </Grid>
+                </Grid>
+            </Border>
+        </Grid>
+    </Border>
+</UserControl>
