@@ -34,6 +34,12 @@ public partial class AdminOverviewViewModel : AdminSubViewModelBase
     private WeeklyScheduleViewModel _scheduleViewModel;
 
     private List<Seance> _allSeancesCache; // To store all sessions before filtering
+    
+    // Lookups for mapping
+    private Dictionary<int, Niveau> _niveauLookup = new();
+    private Dictionary<int, Salle> _salleLookup = new();
+    private Dictionary<int, UniteEnseignement> _ueLookup = new();
+    private Dictionary<int, User> _userLookup = new();
 
     public AdminOverviewViewModel()
     {
@@ -48,8 +54,21 @@ public partial class AdminOverviewViewModel : AdminSubViewModelBase
 
     private async Task LoadDataAsync()
     {
-        // 1. Fetch Filieres (Niveaux)
+        // 1. Fetch Reference Data for mapping
         var niveaux = await Services.ApiService.GetNiveauxAsync();
+        _niveauLookup = niveaux.ToDictionary(n => n.Id_Niveau, n => n);
+        
+        var salles = await Services.ApiService.GetSallesAsync();
+        _salleLookup = salles.ToDictionary(s => s.ID_Salle, s => s);
+        
+        var ues = await Services.ApiService.GetUEsAsync();
+        _ueLookup = ues.ToDictionary(u => u.ID_UE, u => u);
+        
+        var users = await Services.ApiService.GetUtilisateursAsync();
+        _userLookup = users.ToDictionary(u => u.ID_Utilisateur, u => u);
+
+        // Update Filieres collection for dropdown
+        Filieres.Clear();
         foreach (var n in niveaux)
         {
             if (!Filieres.Contains(n.Code))
@@ -60,9 +79,20 @@ public partial class AdminOverviewViewModel : AdminSubViewModelBase
             SelectedFiliere = Filieres[0];
 
         // 2. Fetch Seances
-        _allSeancesCache = await Services.ApiService.GetSeancesAsync();
+        var seances = await Services.ApiService.GetSeancesAsync();
         
-        // 3. Update UI
+        // 3. Map Seances to full objects
+        foreach (var s in seances)
+        {
+            if (_ueLookup.TryGetValue(s.UE_ID, out var ue)) s.UE = ue;
+            if (_salleLookup.TryGetValue(s.Salle_ID, out var sl)) s.Salle = sl;
+            if (_userLookup.TryGetValue(s.Enseignant_ID, out var t)) s.Enseignant = t;
+            if (_niveauLookup.TryGetValue(s.Niveau_ID, out var n)) s.Classe = new Classe { Id_Niveau = n.Id_Niveau, Code = n.Code };
+        }
+
+        _allSeancesCache = seances;
+        
+        // 4. Update UI
         UpdateScheduleFilter();
     }
 
@@ -127,9 +157,8 @@ public partial class AdminOverviewViewModel : AdminSubViewModelBase
             var daySch = new DaySchedule(date.ToString("dddd", System.Globalization.CultureInfo.CurrentCulture).ToUpper(), date);
             
             // Filter seances for this day AND the selected filiere (Code comparison)
-            // Note: In real scenarios we might use Level ID
             var seancesForDay = _allSeancesCache
-                .Where(s => s.Date.Date == date.Date && (s.Niveau_ID.ToString() == SelectedFiliere || s.Classe?.Code == SelectedFiliere))
+                .Where(s => s.Date.Date == date.Date && (s.Classe?.Code == SelectedFiliere || _niveauLookup.GetValueOrDefault(s.Niveau_ID)?.Code == SelectedFiliere))
                 .OrderBy(s => s.HeureDebut)
                 .ToList();
 

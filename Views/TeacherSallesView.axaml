@@ -1,0 +1,42 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:TP203.ViewModels"
+             x:Class="TP203.Views.TeacherSallesView"
+             x:DataType="vm:TeacherSallesViewModel">
+
+    <Grid RowDefinitions="Auto, *">
+        <Border Padding="20" Background="#10FFFFFF" BorderBrush="#20FFFFFF" BorderThickness="0,0,0,1">
+            <StackPanel>
+                <TextBlock Text="Salles de Cours" FontSize="20" FontWeight="Bold"/>
+                <TextBlock Text="Liste des salles disponibles pour vos séances" Opacity="0.6"/>
+            </StackPanel>
+        </Border>
+
+        <ScrollViewer Grid.Row="1" Padding="20">
+            <ItemsControl ItemsSource="{Binding Salles}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Background="#10FFFFFF" Margin="0,0,0,10" Padding="15" CornerRadius="12" BorderBrush="#20FFFFFF" BorderThickness="1">
+                            <Grid ColumnDefinitions="Auto, *, Auto">
+                                <Border Width="50" Height="50" Background="{StaticResource AccentPrimaryBrush}" CornerRadius="12">
+                                    <PathIcon Data="{StaticResource home_regular}" Foreground="White" Width="24" Height="24"/>
+                                </Border>
+                                <StackPanel Grid.Column="1" Margin="20,0">
+                                    <TextBlock Text="{Binding Nom}" FontSize="18" FontWeight="Bold"/>
+                                    <TextBlock Text="{Binding Type}" Opacity="0.6"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding Capacite, StringFormat='{}Capacité: {0}'}" FontSize="12" Opacity="0.8" HorizontalAlignment="Right"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <Border Grid.Row="1" IsVisible="{Binding IsBusy}" Background="#80000000">
+            <ProgressBar IsIndeterminate="True" VerticalAlignment="Center" HorizontalAlignment="Center" Width="200"/>
+        </Border>
+    </Grid>
+</UserControl>

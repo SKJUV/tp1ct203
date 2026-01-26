@@ -1,0 +1,47 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:TP203.ViewModels"
+        x:Class="TP203.Views.AddFiliereWindow"
+        x:DataType="vm:AddFiliereViewModel"
+        Title="Ajouter une Filière" Width="450" Height="400"
+        WindowStartupLocation="CenterOwner"
+        Background="{StaticResource BackgroundDarkBrush}"
+        TransparencyLevelHint="AcrylicBlur"
+        ExtendClientAreaToDecorationsHint="True">
+
+    <Border Padding="25" BorderBrush="#33FFFFFF" BorderThickness="1" CornerRadius="15" Margin="10">
+        <StackPanel Spacing="15">
+            <TextBlock Text="Nouvelle Filière" FontSize="20" FontWeight="Bold" Foreground="White" Margin="0,0,0,10"/>
+
+            <StackPanel Spacing="5">
+                <TextBlock Text="Intitulé de la filière" FontSize="12" Opacity="0.7"/>
+                <TextBox Text="{Binding Intitule}" Watermark="Ex: Génie Logiciel"/>
+            </StackPanel>
+
+            <StackPanel Spacing="5">
+                <TextBlock Text="Code" FontSize="12" Opacity="0.7"/>
+                <TextBox Text="{Binding Code}" Watermark="Ex: GL"/>
+            </StackPanel>
+
+            <StackPanel Spacing="5">
+                <TextBlock Text="Département" FontSize="12" Opacity="0.7"/>
+                <ComboBox ItemsSource="{Binding Departements}" 
+                          SelectedItem="{Binding SelectedDepartement}"
+                          HorizontalAlignment="Stretch">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Nom}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </StackPanel>
+
+            <TextBlock Text="{Binding ErrorMessage}" Foreground="#EF4444" FontSize="12" IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+
+            <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Right" Margin="0,20,0,0">
+                <Button Content="Annuler" Command="{Binding CancelCommand}" Classes="Secondary"/>
+                <Button Content="Enregistrer" Command="{Binding SaveCommand}" Classes="Primary" IsEnabled="{Binding !IsBusy}"/>
+            </StackPanel>
+        </StackPanel>
+    </Border>
+</Window>

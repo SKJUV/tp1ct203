@@ -139,9 +139,10 @@ public class ApiService
             var json = JsonConvert.SerializeObject(dto);
             var body = new StringContent(json, Encoding.UTF8, "application/json");
             var response = await _httpClient.PostAsync($"{BaseUrl}/UniteEnseignement", body);
+            Console.WriteLine($"CreateUE Response: {response.StatusCode}");
             return response.IsSuccessStatusCode;
         }
-        catch { return false; }
+        catch { Console.WriteLine("CreateUE Error"); return false; }
     }
 
     public static async Task<bool> CreateNiveauAsync(Niveau niveau)
@@ -179,7 +180,99 @@ public class ApiService
         return new List<Filiere>();
     }
 
-    // --- Reference Data ---
+    public static async Task<List<User>> GetUtilisateursAsync()
+    {
+        try
+        {
+            var response = await _httpClient.GetAsync($"{BaseUrl}/Utilisateur");
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var users = JsonConvert.DeserializeObject<List<User>>(content) ?? new List<User>();
+                // For teachers, use the login as name if Name is empty
+                foreach(var u in users) if(string.IsNullOrEmpty(u.Name)) u.Name = u.Login;
+                return users;
+            }
+        }
+        catch { }
+        return new List<User>();
+    }
+
+    public static async Task<List<Etudiant>> GetEtudiantsAsync()
+    {
+        try
+        {
+            var response = await _httpClient.GetAsync($"{BaseUrl}/Étudiant");
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<List<Etudiant>>(content) ?? new List<Etudiant>();
+            }
+        }
+        catch { }
+        return new List<Etudiant>();
+    }
+
+    public static async Task<bool> CreateUtilisateurAsync(User user, string password)
+    {
+        try
+        {
+            var dto = new
+            {
+                login = user.Login,
+                password = password,
+                type = user.Type
+            };
+            var json = JsonConvert.SerializeObject(dto);
+            var body = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await _httpClient.PostAsync($"{BaseUrl}/Utilisateur/register", body);
+            return response.IsSuccessStatusCode;
+        }
+        catch { return false; }
+    }
+
+    // --- Delete Methods ---
+    public static async Task<bool> DeleteSeanceAsync(int id) => await DeleteAsync($"{BaseUrl}/séances/{id}");
+    public static async Task<bool> DeleteSalleAsync(int id) => await DeleteAsync($"{BaseUrl}/Salle/{id}");
+    public static async Task<bool> DeleteUEAsync(int id) => await DeleteAsync($"{BaseUrl}/UniteEnseignement/{id}");
+    public static async Task<bool> DeleteNiveauAsync(int id) => await DeleteAsync($"{BaseUrl}/Niveau/{id}");
+
+    private static async Task<bool> DeleteAsync(string url)
+    {
+        try
+        {
+            var response = await _httpClient.DeleteAsync(url);
+            return response.IsSuccessStatusCode;
+        }
+        catch { return false; }
+    }
+
+    // --- Update Methods ---
+    public static async Task<bool> UpdateSeanceAsync(Seance s)
+    {
+        try
+        {
+            var json = JsonConvert.SerializeObject(s);
+            var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+            var response = await _httpClient.PutAsync($"{BaseUrl}/séances/{s.ID_Seance}", content);
+            return response.IsSuccessStatusCode;
+        }
+        catch { return false; }
+    }
+
+    public static async Task<bool> UpdateSalleAsync(Salle s)
+    {
+        try
+        {
+            var json = JsonConvert.SerializeObject(s);
+            var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+            var response = await _httpClient.PutAsync($"{BaseUrl}/Salle/{s.ID_Salle}", content);
+            return response.IsSuccessStatusCode;
+        }
+        catch { return false; }
+    }
+
+    // Helper for Reference Data (GetSalles, GetUEs, GetNiveaux already exist but let's make sure they are robust)
     public static async Task<List<Salle>> GetSallesAsync()
     {
         try
@@ -209,6 +302,48 @@ public class ApiService
         catch { }
         return new List<UniteEnseignement>();
     }
+
+    public static async Task<List<Departement>> GetDepartementsAsync()
+    {
+        try
+        {
+            var response = await _httpClient.GetAsync($"{BaseUrl}/Departement");
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<List<Departement>>(content) ?? new List<Departement>();
+            }
+        }
+        catch { }
+        return new List<Departement>();
+    }
+
+    public static async Task<bool> CreateDepartementAsync(Departement dept)
+    {
+        try
+        {
+            var json = JsonConvert.SerializeObject(dept);
+            var body = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await _httpClient.PostAsync($"{BaseUrl}/Departement", body);
+            return response.IsSuccessStatusCode;
+        }
+        catch { return false; }
+    }
+
+    public static async Task<bool> CreateFiliereAsync(Filiere filiere)
+    {
+        try
+        {
+            var json = JsonConvert.SerializeObject(filiere);
+            var body = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await _httpClient.PostAsync($"{BaseUrl}/Filiere", body);
+            return response.IsSuccessStatusCode;
+        }
+        catch { return false; }
+    }
+
+    public static async Task<bool> DeleteDepartementAsync(int id) => await DeleteAsync($"{BaseUrl}/Departement/{id}");
+    public static async Task<bool> DeleteFiliereAsync(int id) => await DeleteAsync($"{BaseUrl}/Filiere/{id}");
 
     public static async Task<List<Niveau>> GetNiveauxAsync()
     {

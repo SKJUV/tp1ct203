@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using System.Linq;
 using TP203.Models;
 using TP203.Services;
 
@@ -37,12 +38,8 @@ public partial class AddUEViewModel : ViewModelBase
             var niveaux = await ApiService.GetNiveauxAsync();
             AvailableNiveaux = new ObservableCollection<Niveau>(niveaux);
 
-            // Mocked Professors - in a real app, you might have a GetUsersAsync(role=Enseignant)
-            AvailableEnseignants = new ObservableCollection<User> {
-                new User { ID_Utilisateur = 1, Name = "Dr. Kemgou" },
-                new User { ID_Utilisateur = 2, Name = "Pr. Fofana" },
-                new User { ID_Utilisateur = 3, Name = "Mme. Smith" }
-            };
+            var users = await ApiService.GetUtilisateursAsync();
+            AvailableEnseignants = new ObservableCollection<User>(users.Where(u => u.Type == 2 || u.Role == UserType.Enseignant));
         }
         catch { }
     }

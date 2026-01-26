@@ -1,0 +1,34 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:TP203.ViewModels"
+        x:Class="TP203.Views.AddDepartmentWindow"
+        x:DataType="vm:AddDepartmentViewModel"
+        Title="Ajouter un Département" Width="400" Height="300"
+        WindowStartupLocation="CenterOwner"
+        Background="{StaticResource BackgroundDarkBrush}"
+        TransparencyLevelHint="AcrylicBlur"
+        ExtendClientAreaToDecorationsHint="True">
+
+    <Border Padding="25" BorderBrush="#33FFFFFF" BorderThickness="1" CornerRadius="15" Margin="10">
+        <StackPanel Spacing="15">
+            <TextBlock Text="Nouveau Département" FontSize="20" FontWeight="Bold" Foreground="White" Margin="0,0,0,10"/>
+
+            <StackPanel Spacing="5">
+                <TextBlock Text="Nom du département" FontSize="12" Opacity="0.7"/>
+                <TextBox Text="{Binding Nom}" Watermark="Ex: Informatique"/>
+            </StackPanel>
+
+            <StackPanel Spacing="5">
+                <TextBlock Text="Code" FontSize="12" Opacity="0.7"/>
+                <TextBox Text="{Binding Code}" Watermark="Ex: INF"/>
+            </StackPanel>
+
+            <TextBlock Text="{Binding ErrorMessage}" Foreground="#EF4444" FontSize="12" IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+
+            <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Right" Margin="0,20,0,0">
+                <Button Content="Annuler" Command="{Binding CancelCommand}" Classes="Secondary"/>
+                <Button Content="Enregistrer" Command="{Binding SaveCommand}" Classes="Primary" IsEnabled="{Binding !IsBusy}"/>
+            </StackPanel>
+        </StackPanel>
+    </Border>
+</Window>

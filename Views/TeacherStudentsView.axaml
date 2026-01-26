@@ -1,0 +1,28 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:TP203.ViewModels"
+             x:Class="TP203.Views.TeacherStudentsView"
+             x:DataType="vm:TeacherStudentsViewModel">
+
+    <Grid RowDefinitions="Auto, *">
+        <Border Padding="20" Background="#10FFFFFF" BorderBrush="#20FFFFFF" BorderThickness="0,0,0,1">
+            <StackPanel>
+                <TextBlock Text="Mes Étudiants" FontSize="20" FontWeight="Bold"/>
+                <TextBlock Text="Liste des étudiants inscrits dans vos unités d'enseignement" Opacity="0.6"/>
+            </StackPanel>
+        </Border>
+
+        <DataGrid Grid.Row="1" ItemsSource="{Binding Students}" AutoGenerateColumns="False" Padding="10"
+                  IsReadOnly="True" Background="Transparent">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Matricule" Binding="{Binding Matricule}" Width="*"/>
+                <DataGridTextColumn Header="Nom" Binding="{Binding Nom}" Width="2*"/>
+                <DataGridTextColumn Header="Niveau" Binding="{Binding Niveau}" Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Border Grid.Row="1" IsVisible="{Binding IsBusy}" Background="#80000000">
+            <ProgressBar IsIndeterminate="True" VerticalAlignment="Center" HorizontalAlignment="Center" Width="200"/>
+        </Border>
+    </Grid>
+</UserControl>

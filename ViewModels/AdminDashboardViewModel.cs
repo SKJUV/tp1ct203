@@ -53,6 +53,7 @@ public partial class AdminDashboardViewModel : ViewModelBase
         {
             "Salles" => new AdminSallesViewModel(),
             "Suivi" => new AdminSuiviViewModel(),
+            "Structure" => new AdminStructureViewModel(),
             _ => new AdminOverviewViewModel()
         };
     }

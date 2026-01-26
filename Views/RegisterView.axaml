@@ -1,14 +1,11 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:TP203.ViewModels"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
-             x:Class="TP203.Views.LoginView"
-             x:DataType="vm:LoginViewModel">
+             x:Class="TP203.Views.RegisterView"
+             x:DataType="vm:RegisterViewModel">
 
     <Grid>
-        <!-- Background with animated-like gradient effect -->
+        <!-- Background -->
         <Canvas>
             <Ellipse Width="600" Height="600" Fill="#206366F1" Margin="-200,-200,0,0">
                 <Ellipse.RenderTransform>
@@ -20,27 +17,32 @@
 
         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="30">
             <!-- Glass Card -->
-            <Border Classes="GlassCard" Width="400" Padding="40">
+            <Border Classes="GlassCard" Width="450" Padding="40">
                 <StackPanel Spacing="25">
-                    <!-- Logo / Header -->
+                    <!-- Header -->
                     <StackPanel Spacing="10" HorizontalAlignment="Center">
                         <Border Width="60" Height="60" CornerRadius="15" Background="{StaticResource PrimaryGradient}">
-                            <PathIcon Data="{StaticResource lock_regular}" Width="30" Height="30" Foreground="White" />
+                            <PathIcon Data="{StaticResource users_regular}" Width="30" Height="30" Foreground="White" />
                         </Border>
-                        <TextBlock Text="Bienvenue" Classes="h1" FontSize="28" FontWeight="Bold" HorizontalAlignment="Center" Foreground="White"/>
-                        <TextBlock Text="Connectez-vous pour continuer" Foreground="{StaticResource TextDimmedBrush}" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Créer un compte" FontSize="28" FontWeight="Bold" HorizontalAlignment="Center" Foreground="White"/>
+                        <TextBlock Text="Rejoignez la plateforme académique" Foreground="{StaticResource TextDimmedBrush}" HorizontalAlignment="Center"/>
                     </StackPanel>
 
                     <!-- Form -->
                     <StackPanel Spacing="15">
                         <StackPanel Spacing="5">
-                            <TextBlock Text="Email" Foreground="{StaticResource TextBrush}" FontSize="14" Margin="5,0"/>
-                            <TextBox Text="{Binding Email}" Watermark="votre@email.com" />
+                            <TextBlock Text="Email / Login" Foreground="{StaticResource TextBrush}" FontSize="14" Margin="5,0"/>
+                            <TextBox Text="{Binding Login}" Watermark="votre@email.com" />
                         </StackPanel>
 
                         <StackPanel Spacing="5">
                             <TextBlock Text="Mot de passe" Foreground="{StaticResource TextBrush}" FontSize="14" Margin="5,0"/>
                             <TextBox Text="{Binding Password}" PasswordChar="*" Watermark="••••••••" />
+                        </StackPanel>
+
+                        <StackPanel Spacing="5">
+                            <TextBlock Text="Type d'utilisateur" Foreground="{StaticResource TextBrush}" FontSize="14" Margin="5,0"/>
+                            <ComboBox ItemsSource="{Binding AvailableTypes}" SelectedItem="{Binding SelectedType}" HorizontalAlignment="Stretch"/>
                         </StackPanel>
                     </StackPanel>
 
@@ -50,32 +52,25 @@
                                HorizontalAlignment="Center" 
                                IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
 
-                    <!-- Action Button -->
-                    <StackPanel Spacing="15">
+                    <!-- Action Buttons -->
+                    <StackPanel Spacing="10">
                         <Button Classes="Primary" 
-                                Command="{Binding LoginCommand}" 
+                                Command="{Binding RegisterCommand}" 
                                 IsEnabled="{Binding !IsBusy}"
                                 HorizontalAlignment="Stretch">
                             <Panel>
-                                <TextBlock Text="Se connecter" IsVisible="{Binding !IsBusy}"/>
+                                <TextBlock Text="S'inscrire" IsVisible="{Binding !IsBusy}"/>
                                 <ProgressBar IsIndeterminate="True" Width="20" Height="20" IsVisible="{Binding IsBusy}" Foreground="White"/>
                             </Panel>
                         </Button>
-
+                        
                         <Button Classes="Secondary" 
-                                Command="{Binding GoToRegisterCommand}" 
+                                Command="{Binding BackToLoginCommand}" 
                                 HorizontalAlignment="Stretch"
-                                Content="Pas de compte ? Créer un compte"
-                                Background="Transparent"
-                                BorderThickness="0"/>
+                                Content="Retour à la connexion"/>
                     </StackPanel>
                 </StackPanel>
             </Border>
-            
-            <TextBlock Text="© 2026 TP203 System • Design Premium" 
-                       HorizontalAlignment="Center" 
-                       Foreground="{StaticResource TextDimmedBrush}" 
-                       FontSize="12"/>
         </StackPanel>
     </Grid>
 </UserControl>

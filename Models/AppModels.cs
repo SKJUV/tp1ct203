@@ -8,8 +8,8 @@ namespace TP203.Models;
 
 public enum UserType
 {
-    Etudiant = 1,
-    Enseignant = 2,
+    Enseignant = 1,
+    Etudiant = 2,
     Delegue = 3,
     Admin = 4 // Chef de département
 }

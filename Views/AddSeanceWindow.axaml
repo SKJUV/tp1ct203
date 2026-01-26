@@ -3,7 +3,7 @@
         xmlns:vm="using:TP203.ViewModels"
         x:Class="TP203.Views.AddSeanceWindow"
         x:DataType="vm:AddSeanceViewModel"
-        Width="600" Height="550"
+        Width="600" Height="700"
         WindowStartupLocation="CenterOwner"
         SystemDecorations="None"
         Background="Transparent"
@@ -21,7 +21,7 @@
             </Border>
 
             <!-- Form -->
-            <ScrollViewer Grid.Row="1" Padding="30">
+            <ScrollViewer Grid.Row="1" Padding="30" VerticalScrollBarVisibility="Auto">
                 <StackPanel Spacing="20">
                     
                     <!-- Filière & UE Row -->

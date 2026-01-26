@@ -4,7 +4,7 @@ using TP203.Models;
 
 namespace TP203.ViewModels;
 
-public partial class WeeklyScheduleViewModel : ObservableObject
+public partial class WeeklyScheduleViewModel : ViewModelBase
 {
     [ObservableProperty]
     private ObservableCollection<DaySchedule> _days;

@@ -1,0 +1,115 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:TP203.ViewModels"
+             xmlns:models="using:TP203.Models"
+             x:Class="TP203.Views.AdminStructureView"
+             x:DataType="vm:AdminStructureViewModel">
+
+    <Grid RowDefinitions="Auto, *">
+        <!-- Header -->
+        <Border Background="#10FFFFFF" Padding="20,15" BorderBrush="#20FFFFFF" BorderThickness="0,0,0,1">
+            <Grid ColumnDefinitions="*, Auto">
+                <StackPanel>
+                    <TextBlock Text="Gestion de la Structure" FontSize="24" FontWeight="Bold"/>
+                    <TextBlock Text="Départements, Filières et Niveaux Académiques" Opacity="0.6"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="10">
+                    <Button Classes="Secondary" Content="+ Département" Command="{Binding AddDepartementCommand}"/>
+                    <Button Classes="Secondary" Content="+ Filière" Command="{Binding AddFiliereCommand}"/>
+                    <Button Classes="Primary" Content="+ Niveau" Command="{Binding AddNiveauCommand}"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Content -->
+        <TabControl Grid.Row="1" Padding="20">
+            <!-- DEPARTEMENTS -->
+            <TabItem Header="Départements">
+                <ScrollViewer>
+                    <ItemsControl ItemsSource="{Binding Departements}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="#10FFFFFF" Margin="0,0,0,10" Padding="15" CornerRadius="8">
+                                    <Grid ColumnDefinitions="Auto, *, Auto">
+                                        <Border Width="40" Height="40" Background="{StaticResource AccentPrimaryBrush}" CornerRadius="20" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding Code}" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                        <StackPanel Grid.Column="1" Margin="15,0">
+                                            <TextBlock Text="{Binding Nom}" FontWeight="Bold" FontSize="16"/>
+                                            <TextBlock Text="{Binding Code, StringFormat='Code: {0}'}" Opacity="0.6" FontSize="12"/>
+                                        </StackPanel>
+                                        <Button Grid.Column="2" Classes="Ghost" Command="{Binding $parent[UserControl].((vm:AdminStructureViewModel)DataContext).DeleteDepartementCommand}" CommandParameter="{Binding}">
+                                            <PathIcon Data="{StaticResource delete_regular}" Foreground="#EF4444"/>
+                                        </Button>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- FILIERES -->
+            <TabItem Header="Filières">
+                <ScrollViewer>
+                    <ItemsControl ItemsSource="{Binding Filieres}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="#10FFFFFF" Margin="0,0,0,10" Padding="15" CornerRadius="8">
+                                    <Grid ColumnDefinitions="Auto, *, Auto">
+                                        <Border Width="40" Height="40" Background="{StaticResource AccentSecondaryBrush}" CornerRadius="20" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding Code}" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                        <StackPanel Grid.Column="1" Margin="15,0">
+                                            <TextBlock Text="{Binding Intitule}" FontWeight="Bold" FontSize="16"/>
+                                            <TextBlock Text="{Binding Code, StringFormat='Code: {0}'}" Opacity="0.6" FontSize="12"/>
+                                        </StackPanel>
+                                        <Button Grid.Column="2" Classes="Ghost" Command="{Binding $parent[UserControl].((vm:AdminStructureViewModel)DataContext).DeleteFiliereCommand}" CommandParameter="{Binding}">
+                                            <PathIcon Data="{StaticResource delete_regular}" Foreground="#EF4444"/>
+                                        </Button>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- NIVEAUX -->
+            <TabItem Header="Niveaux / Classes">
+                 <ScrollViewer>
+                    <ItemsControl ItemsSource="{Binding Niveaux}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="#10FFFFFF" Margin="0,0,0,10" Padding="15" CornerRadius="8">
+                                    <Grid ColumnDefinitions="Auto, *, Auto">
+                                        <Border Width="40" Height="40" Background="#10B981" CornerRadius="20" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                            <PathIcon Data="{StaticResource layer_regular}" Foreground="White"/>
+                                        </Border>
+                                        <StackPanel Grid.Column="1" Margin="15,0">
+                                            <TextBlock Text="{Binding Code}" FontWeight="Bold" FontSize="16"/>
+                                            <TextBlock Text="{Binding Annee_Academique, StringFormat='Année: {0}'}" Opacity="0.6" FontSize="12"/>
+                                            <TextBlock Text="{Binding Semestre, StringFormat='Semestre: {0}'}" Opacity="0.6" FontSize="12"/>
+                                        </StackPanel>
+                                        <Button Grid.Column="2" Classes="Ghost" Command="{Binding $parent[UserControl].((vm:AdminStructureViewModel)DataContext).DeleteNiveauCommand}" CommandParameter="{Binding}">
+                                            <PathIcon Data="{StaticResource delete_regular}" Foreground="#EF4444"/>
+                                        </Button>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </TabItem>
+        </TabControl>
+
+        <!-- Loading Overlay -->
+        <Border Grid.RowSpan="2" Background="#80000000" IsVisible="{Binding IsBusy}">
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                <ProgressBar IsIndeterminate="True" Width="200"/>
+                <TextBlock Text="Chargement..." Margin="0,10,0,0" HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

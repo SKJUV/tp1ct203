@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using System.Linq;
 using TP203.Models;
 using TP203.Services;
 
@@ -52,11 +53,11 @@ public partial class AddSeanceViewModel : ViewModelBase
             var niveaux = await ApiService.GetNiveauxAsync();
             AvailableFilieres = new ObservableCollection<Niveau>(niveaux);
 
-            // Mocked Professors (as they might not be in a special teacher list endpoint)
-            AvailableProfs = new ObservableCollection<User> {
-                new User { ID_Utilisateur = 1, Name = "Dr. Kemgou" },
-                new User { ID_Utilisateur = 2, Name = "Pr. Fofana" }
-            };
+            var users = await ApiService.GetUtilisateursAsync();
+            // Filter by type Enseignant (2)
+            AvailableProfs = new ObservableCollection<User>(users.Where(u => u.Type == 2 || u.Role == UserType.Enseignant));
+            
+            if (AvailableProfs.Count > 0) SelectedProf = AvailableProfs[0];
         }
         catch { }
     }

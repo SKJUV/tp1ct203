@@ -5,38 +5,90 @@
              x:Class="TP203.Views.TeacherDashboardView"
              x:DataType="vm:TeacherDashboardViewModel">
 
-    <Grid RowDefinitions="Auto, *">
-        <!-- Header -->
-        <Border Height="70" Background="{StaticResource SurfaceBrush}" BorderBrush="{StaticResource GlassBorderColor}" BorderThickness="0,0,0,1" Padding="20,0">
-            <Grid ColumnDefinitions="*, Auto">
-                <StackPanel VerticalAlignment="Center">
-                    <TextBlock Text="Espace Enseignant" FontSize="18" FontWeight="Bold"/>
-                    <TextBlock Text="{Binding TeacherName}" FontSize="12" Foreground="{StaticResource AccentSecondaryBrush}"/>
-                </StackPanel>
+    <Grid ColumnDefinitions="80, *">
+        <!-- Slim Sidebar Navigation -->
+        <Border Grid.Column="0" Background="{StaticResource SurfaceBrush}" BorderBrush="{StaticResource GlassBorderColor}" BorderThickness="0,0,1,0">
+            <DockPanel Margin="0,20">
+                <!-- Logo -->
+                <Border DockPanel.Dock="Top" Width="45" Height="45" CornerRadius="12" Background="{StaticResource PrimaryGradient}" HorizontalAlignment="Center" Margin="0,0,0,40">
+                    <PathIcon Data="{StaticResource home_regular}" Width="22" Height="22" Foreground="White" />
+                </Border>
 
-                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="15" VerticalAlignment="Center">
-                    <Button Classes="Secondary" Content="Mes Disponibilités"/>
-                    <Button Background="Transparent" Command="{Binding LogoutCommand}">
-                         <PathIcon Data="{StaticResource logout_regular}" Width="18" Height="18" Foreground="#EF4444"/>
+                <!-- Logout at bottom -->
+                <Button DockPanel.Dock="Bottom" Command="{Binding LogoutCommand}" ToolTip.Tip="Déconnexion" 
+                        Background="Transparent" HorizontalAlignment="Center" Margin="0,20">
+                    <PathIcon Data="{StaticResource logout_regular}" Width="20" Height="20" Foreground="#EF4444"/>
+                </Button>
+
+                <!-- Nav Icons -->
+                <StackPanel Spacing="15" HorizontalAlignment="Center">
+                    <Button Classes="Ghost" Command="{Binding NavigateCommand}" CommandParameter="Schedule" ToolTip.Tip="Mon Planning">
+                        <PathIcon Data="{StaticResource calendar_regular}" Width="24" Height="24" />
+                    </Button>
+                    <Button Classes="Ghost" Command="{Binding NavigateCommand}" CommandParameter="Students" ToolTip.Tip="Mes Étudiants">
+                        <PathIcon Data="{StaticResource users_regular}" Width="24" Height="24" />
+                    </Button>
+                    <Button Classes="Ghost" Command="{Binding NavigateCommand}" CommandParameter="Salles" ToolTip.Tip="Salles de Cours">
+                        <PathIcon Data="{StaticResource home_regular}" Width="24" Height="24" />
                     </Button>
                 </StackPanel>
-            </Grid>
+            </DockPanel>
         </Border>
 
-        <!-- Main Content (Full Height, no global scroll) -->
-        <Grid Grid.Row="1" ColumnDefinitions="*" RowDefinitions="Auto, *">
-            <!-- Alert Banner -->
-            <Border Classes="GlassCard" Padding="15" Margin="20,20,20,0" Background="#10F59E0B">
-                <StackPanel Spacing="5">
-                    <TextBlock Text="Action Requise" FontWeight="Bold" Foreground="#F59E0B"/>
-                    <TextBlock Text="Vous n'avez pas encore validé les heures du cours MAT201 (Lundi dernier)." TextWrapping="Wrap" Opacity="0.8"/>
-                    <Button Content="Valider maintenant" Background="Transparent" BorderBrush="#F59E0B" BorderThickness="1" HorizontalAlignment="Left" Foreground="#F59E0B"/>
-                </StackPanel>
+        <!-- Dynamic Content Area -->
+        <Grid Grid.Column="1" RowDefinitions="Auto, *">
+             <!-- Top Header -->
+            <Border Grid.Row="0" Height="70" Background="{StaticResource SurfaceBrush}" BorderBrush="{StaticResource GlassBorderColor}" BorderThickness="0,0,0,1" Padding="25,0">
+                <Grid ColumnDefinitions="*, Auto">
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="Tableau de Bord Enseignant" FontSize="20" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding TeacherName}" FontSize="12" Foreground="{StaticResource AccentSecondaryBrush}"/>
+                    </StackPanel>
+                    
+                    <Button Grid.Column="1" Classes="Primary" Content="+ Nouvelle Séance" Command="{Binding OpenAddSeanceCommand}" VerticalAlignment="Center"/>
+                </Grid>
             </Border>
 
-            <!-- Schedule Takes Remaining Space -->
-            <Border Grid.Row="1" Padding="20">
-                <views:WeeklyScheduleView DataContext="{Binding ScheduleViewModel}" />
+            <!-- Content -->
+            <TransitioningContentControl Grid.Row="1" Content="{Binding CurrentSubView}">
+                <TransitioningContentControl.PageTransition>
+                    <PageSlide Duration="0:0:0.4" Orientation="Vertical" />
+                </TransitioningContentControl.PageTransition>
+                <TransitioningContentControl.DataTemplates>
+                    <!-- Explicit Schedule Overview View -->
+                    <DataTemplate DataType="{x:Type vm:TeacherScheduleOverviewViewModel}">
+                         <Grid RowDefinitions="Auto, *">
+                            <Border Classes="GlassCard" Padding="20" Margin="25,25,25,0" Background="#05FFFFFF">
+                                <Grid ColumnDefinitions="Auto, *">
+                                    <Border Width="50" Height="50" CornerRadius="12" Background="#10F59E0B" VerticalAlignment="Top">
+                                        <PathIcon Data="{StaticResource calendar_regular}" Foreground="#F59E0B" Width="24" Height="24"/>
+                                    </Border>
+                                    <StackPanel Grid.Column="1" Margin="20,0" VerticalAlignment="Center">
+                                        <TextBlock Text="Votre Semaine Académique" FontSize="18" FontWeight="Bold"/>
+                                        <TextBlock Text="Consultez et gérez vos séances de cours pour la semaine en cours." Opacity="0.6"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                            <Border Grid.Row="1" Padding="15">
+                                <views:WeeklyScheduleView DataContext="{Binding Schedule}" />
+                            </Border>
+                        </Grid>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:TeacherStudentsViewModel}">
+                        <views:TeacherStudentsView />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:TeacherSallesViewModel}">
+                        <views:TeacherSallesView />
+                    </DataTemplate>
+                </TransitioningContentControl.DataTemplates>
+            </TransitioningContentControl>
+
+            <!-- Loading Overlay -->
+            <Border Grid.RowSpan="2" Background="#AA000000" IsVisible="{Binding IsBusy}" CornerRadius="0">
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="15">
+                    <ProgressBar IsIndeterminate="True" Width="200" Foreground="{StaticResource AccentPrimaryBrush}"/>
+                    <TextBlock Text="Synchronisation..." HorizontalAlignment="Center" FontWeight="SemiBold"/>
+                </StackPanel>
             </Border>
         </Grid>
     </Grid>

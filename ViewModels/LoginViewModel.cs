@@ -2,6 +2,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Threading.Tasks;
 using TP203.Services;
+using TP203.Models;
 
 namespace TP203.ViewModels;
 
@@ -45,12 +46,7 @@ public partial class LoginViewModel : ViewModelBase
 
             if (user != null)
             {
-                string roleName = user.Role.ToString();
-                
-                // Fallback / Patch for Type 0 or unknown
-                if (user.Type == 0 || roleName == "0") roleName = "Admin";
-
-                _mainViewModel.NavigateToDashboard(roleName);
+                _mainViewModel.NavigateToDashboard(user);
             }
             else
             {
@@ -66,5 +62,10 @@ public partial class LoginViewModel : ViewModelBase
         {
             IsBusy = false;
         }
+    }
+    [RelayCommand]
+    private void GoToRegister()
+    {
+        _mainViewModel.NavigateToRegister();
     }
 }
